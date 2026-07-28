@@ -1,4 +1,4 @@
-import { robots, jozin, activeRobots, inactiveRobots } from '@/data/robots/robots';
+import { robots, activeRobots, inactiveRobots } from '@/data/robots/robots';
 import type { Robot } from '@/data/robots/robots';
 import Image from 'next/image';
 
@@ -21,10 +21,6 @@ function RobotCard({ robot }: { robot: Robot }) {
 
       {/* Image */}
       <div className="relative w-32 h-32 mx-auto mb-4">
-        <div
-          className="absolute inset-0 rounded-full opacity-20 blur-2xl"
-          style={{ background: 'radial-gradient(circle, currentColor, transparent)' }}
-        />
         <Image
           src={robot.image}
           alt={robot.name}
@@ -60,29 +56,6 @@ function RobotCard({ robot }: { robot: Robot }) {
   );
 }
 
-function JozinCard() {
-  return (
-    <div className="rounded-2xl border-2 border-amber-200 bg-amber-50 p-6 shadow-sm max-w-sm mx-auto">
-      <div className="relative w-32 h-32 mx-auto mb-4">
-        <Image
-          src={jozin.image}
-          alt={jozin.name}
-          width={128}
-          height={128}
-          className="w-full h-full object-contain drop-shadow-md"
-        />
-      </div>
-      <div className="text-center mb-3">
-        <h3 className="font-bold text-lg text-gray-900">{jozin.name}</h3>
-        <p className="text-sm text-amber-600">{jozin.role}</p>
-      </div>
-      <p className="text-gray-600 text-sm leading-relaxed text-center">
-        {jozin.description}
-      </p>
-    </div>
-  );
-}
-
 export default function RobotsPage() {
   return (
     <section className="py-16 px-4 max-w-6xl mx-auto">
@@ -93,8 +66,8 @@ export default function RobotsPage() {
         </p>
       </div>
 
-      {/* Active robots */}
-      <div className="mb-8">
+      {/* Active robots (včetně Jožina) */}
+      <div className="mb-12">
         <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">
           🟢 Na směně
         </h3>
@@ -103,11 +76,6 @@ export default function RobotsPage() {
             <RobotCard key={robot.id} robot={robot} />
           ))}
         </div>
-      </div>
-
-      {/* Jožin */}
-      <div className="mb-8">
-        <JozinCard />
       </div>
 
       {/* Inactive robots */}

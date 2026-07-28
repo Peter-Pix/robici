@@ -1,12 +1,9 @@
 import Image from 'next/image';
-import { activeRobots, jozin } from '@/data/robots/robots';
+import { activeRobots } from '@/data/robots/robots';
 
 export default function Hero() {
-  // All avatars + Jožin in a row
-  const avatars = [
-    ...activeRobots.map((r) => ({ src: r.image, alt: r.name })),
-    { src: jozin.image, alt: jozin.name },
-  ];
+  // Všichni aktivní Robíci (včetně Jožina) v řadě
+  const avatars = activeRobots.map((r) => ({ src: r.image, alt: r.name }));
 
   return (
     <section className="relative py-20 px-4 text-center overflow-hidden">

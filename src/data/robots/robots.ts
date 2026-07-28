@@ -198,24 +198,30 @@ export const robots: Robot[] = [
     status: 'inactive',
     mood: 6,
   },
+  {
+    id: 'jozin',
+    name: 'Jožin',
+    role: 'Firemní kocour',
+    emoji: '🐈',
+    image: '/roboti/jozin.png',
+    color: 'bg-amber-500',
+    accent: 'amber',
+    description:
+      'Nemá žádnou práci. Nikdo neví, proč je na výplatní pásce. Ale když se něco rozbije, vždycky sedí vedle serveru.',
+    personality: [
+      'Nemá žádnou práci',
+      'Nikdo neví, proč je na výplatní pásce',
+      'Když se něco rozbije, sedí vedle serveru',
+    ],
+    catchphrases: [
+      'Mňau.',
+      '...',
+      '⬛',
+    ],
+    status: 'active',
+    mood: 10,
+  },
 ];
-
-export const jozin = {
-  id: 'jozin',
-  name: 'Jožin',
-  role: 'Firemní kocour',
-  emoji: '🐈',
-  image: '/roboti/jozin.png',
-  color: 'bg-amber-500',
-  description:
-    'Nemá žádnou práci. Nikdo neví, proč je na výplatní pásce. Ale když se něco rozbije, vždycky sedí vedle serveru.',
-  personality: [
-    'Nemá žádnou práci',
-    'Nikdo neví, proč je na výplatní pásce',
-    'Když se něco rozbije, sedí vedle serveru',
-  ],
-  catchphrases: ['Mňau.', '...', '⬛'],
-};
 
 export const activeRobots = robots.filter((r) => r.status === 'active');
 export const inactiveRobots = robots.filter((r) => r.status === 'inactive');
