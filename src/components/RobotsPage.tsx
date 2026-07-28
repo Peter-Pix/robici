@@ -1,5 +1,6 @@
 import { robots, jozin, activeRobots, inactiveRobots } from '@/data/robots/robots';
 import type { Robot } from '@/data/robots/robots';
+import Image from 'next/image';
 
 function RobotCard({ robot }: { robot: Robot }) {
   const statusColors = {
@@ -9,22 +10,34 @@ function RobotCard({ robot }: { robot: Robot }) {
   };
 
   return (
-    <div className="group relative rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
+    <div className="group relative rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5 overflow-hidden">
       {/* Status dot */}
-      <div className="absolute top-4 right-4 flex items-center gap-2">
+      <div className="absolute top-4 right-4 flex items-center gap-2 z-10">
         <span className={`h-3 w-3 rounded-full ${statusColors[robot.status]}`} />
         <span className="text-xs text-gray-400">
           {robot.status === 'active' ? 'Na směně' : 'Mimo službu'}
         </span>
       </div>
 
+      {/* Image */}
+      <div className="relative w-32 h-32 mx-auto mb-4">
+        <div
+          className="absolute inset-0 rounded-full opacity-20 blur-2xl"
+          style={{ background: 'radial-gradient(circle, currentColor, transparent)' }}
+        />
+        <Image
+          src={robot.image}
+          alt={robot.name}
+          width={128}
+          height={128}
+          className="relative w-full h-full object-contain drop-shadow-md group-hover:scale-105 transition-transform"
+        />
+      </div>
+
       {/* Header */}
-      <div className="flex items-center gap-3 mb-3">
-        <span className="text-3xl">{robot.emoji}</span>
-        <div>
-          <h3 className="font-bold text-lg text-gray-900">{robot.name}</h3>
-          <p className="text-sm text-gray-500">{robot.role}</p>
-        </div>
+      <div className="text-center mb-3">
+        <h3 className="font-bold text-lg text-gray-900">{robot.name}</h3>
+        <p className="text-sm text-gray-500">{robot.role}</p>
       </div>
 
       {/* Description */}
@@ -49,15 +62,23 @@ function RobotCard({ robot }: { robot: Robot }) {
 
 function JozinCard() {
   return (
-    <div className="rounded-2xl border-2 border-amber-200 bg-amber-50 p-6 shadow-sm">
-      <div className="flex items-center gap-3 mb-3">
-        <span className="text-3xl">{jozin.emoji}</span>
-        <div>
-          <h3 className="font-bold text-lg text-gray-900">{jozin.name}</h3>
-          <p className="text-sm text-amber-600">{jozin.role}</p>
-        </div>
+    <div className="rounded-2xl border-2 border-amber-200 bg-amber-50 p-6 shadow-sm max-w-sm mx-auto">
+      <div className="relative w-32 h-32 mx-auto mb-4">
+        <Image
+          src={jozin.image}
+          alt={jozin.name}
+          width={128}
+          height={128}
+          className="w-full h-full object-contain drop-shadow-md"
+        />
       </div>
-      <p className="text-gray-600 text-sm leading-relaxed">{jozin.description}</p>
+      <div className="text-center mb-3">
+        <h3 className="font-bold text-lg text-gray-900">{jozin.name}</h3>
+        <p className="text-sm text-amber-600">{jozin.role}</p>
+      </div>
+      <p className="text-gray-600 text-sm leading-relaxed text-center">
+        {jozin.description}
+      </p>
     </div>
   );
 }
@@ -85,7 +106,7 @@ export default function RobotsPage() {
       </div>
 
       {/* Jožin */}
-      <div className="max-w-sm mx-auto mb-8">
+      <div className="mb-8">
         <JozinCard />
       </div>
 

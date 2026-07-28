@@ -1,5 +1,6 @@
 import { todaysShift } from '@/data/content/shift-data';
 import { robots } from '@/data/robots/robots';
+import Image from 'next/image';
 
 function getRobot(id: string) {
   return robots.find((r) => r.id === id);
@@ -37,15 +38,23 @@ export default function ShiftBoard() {
                 i < todaysShift.length - 1 ? 'border-b border-gray-100' : ''
               }`}
             >
-              {/* Status dot */}
-              <div className="mt-1 flex-shrink-0">
-                <span className={`inline-block h-3 w-3 rounded-full ${config.dot}`} />
+              {/* Avatar */}
+              <div className="relative w-12 h-12 flex-shrink-0">
+                <Image
+                  src={robot?.image ?? ''}
+                  alt={robot?.name ?? ''}
+                  width={48}
+                  height={48}
+                  className="w-full h-full object-contain"
+                />
+                <span
+                  className={`absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full ring-2 ring-white ${config.dot}`}
+                />
               </div>
 
               {/* Content */}
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-lg">{robot?.emoji}</span>
+                <div className="flex items-center gap-2 mb-1 flex-wrap">
                   <span className="font-semibold text-gray-900">{robot?.name}</span>
                   {entry.metric && (
                     <span className="text-xs text-gray-400 bg-gray-100 rounded-full px-2 py-0.5">

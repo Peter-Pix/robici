@@ -1,5 +1,6 @@
 import { chatMessages } from '@/data/content/shift-data';
 import { robots } from '@/data/robots/robots';
+import Image from 'next/image';
 
 function getRobot(id: string) {
   return robots.find((r) => r.id === id);
@@ -24,8 +25,16 @@ export default function ChatWidget() {
                 key={i}
                 className={`flex gap-3 ${isMarie ? '' : 'ml-4'}`}
               >
-                <span className="text-xl flex-shrink-0 mt-0.5">{robot?.emoji}</span>
-                <div>
+                <div className="relative w-10 h-10 flex-shrink-0">
+                  <Image
+                    src={robot?.image ?? ''}
+                    alt={robot?.name ?? ''}
+                    width={40}
+                    height={40}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">
                     <span className="text-xs font-semibold text-gray-900">
                       {robot?.name}

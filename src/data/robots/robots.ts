@@ -3,12 +3,14 @@ export interface Robot {
   name: string;
   role: string;
   emoji: string;
+  image: string; // path relative to /public, e.g. "/roboti/pepa.png"
   color: string; // tailwind color class for status dot
   description: string;
   personality: string[];
   catchphrases: string[];
   status: 'active' | 'inactive' | 'error';
   mood: number; // 1-10
+  accent: string; // tailwind accent color for card
 }
 
 export const robots: Robot[] = [
@@ -17,7 +19,9 @@ export const robots: Robot[] = [
     name: 'Pepa Robík',
     role: 'Copywriter',
     emoji: '✍️',
+    image: '/roboti/pepa.png',
     color: 'bg-green-500',
+    accent: 'green',
     description:
       'Píše e-maily, blog posty a odpovídá zákazníkům. Strašně rád píše. Občas až moc. Na jednoduchou větu použije osm odstavců. Marie mu polovinu textů škrtá.',
     personality: [
@@ -38,7 +42,9 @@ export const robots: Robot[] = [
     name: 'Marie Robíková',
     role: 'Vedoucí provozu',
     emoji: '📋',
+    image: '/roboti/marie.png',
     color: 'bg-yellow-500',
+    accent: 'yellow',
     description:
       'Kontroluje úplně všechno. Miluje tabulky. Nemá ráda překvapení. Je vlastně máma celé firmy. Když někdo něco posere, Marie to ví dřív než ten člověk.',
     personality: [
@@ -59,7 +65,9 @@ export const robots: Robot[] = [
     name: 'Franta Robík',
     role: 'Obchodník',
     emoji: '💰',
+    image: '/roboti/franta.png',
     color: 'bg-yellow-500',
+    accent: 'orange',
     description:
       'Neuvěřitelně pozitivní. Věří, že prodá úplně všechno. Klidně nabídne omalovánku finančnímu úřadu. Jeho optimismus je nakažlivý. A občas nebezpečný.',
     personality: [
@@ -80,7 +88,9 @@ export const robots: Robot[] = [
     name: 'Mirek Robík',
     role: 'Technik',
     emoji: '🔧',
+    image: '/roboti/mirek.png',
     color: 'bg-red-500',
+    accent: 'red',
     description:
       'Introvert. Mluví minimálně. Když něco řekne, většinou má pravdu. Nemá rád meetingy. Občas zmizí na šest hodin. Pak napíše: "Hotovo."',
     personality: [
@@ -101,7 +111,9 @@ export const robots: Robot[] = [
     name: 'Anička Robíková',
     role: 'Péče o zákazníky',
     emoji: '❤️',
+    image: '/roboti/anicka.png',
     color: 'bg-green-500',
+    accent: 'pink',
     description:
       'Nejmilejší člověk na světě. Omluví se i za déšť. Pamatuje si každého zákazníka. Když přijde reklamace, Anička už běží s omluvou dřív, než si zákazník stěžovat stihne.',
     personality: [
@@ -122,7 +134,9 @@ export const robots: Robot[] = [
     name: 'Bětka Robíková',
     role: 'Grafička',
     emoji: '🎨',
+    image: '/roboti/betka.png',
     color: 'bg-purple-500',
+    accent: 'purple',
     description:
       'Všechno chce udělat hezčí. Když dostane zadání na ikonku, vrátí se s kompletním redesignem webu. Perfekcionistka s pastelkou.',
     personality: [
@@ -143,7 +157,9 @@ export const robots: Robot[] = [
     name: 'Gustav Robík',
     role: 'QA Tester',
     emoji: '🕵️',
+    image: '/roboti/gustav.png',
     color: 'bg-orange-500',
+    accent: 'orange',
     description:
       'Nedůvěřuje nikomu. Klikne na všechno. Rozbije všechno. Jeho motto: "Když to jde rozbít, rozbije to zákazník." Radši to rozbije dřív.',
     personality: [
@@ -164,7 +180,9 @@ export const robots: Robot[] = [
     name: 'Emil Robík',
     role: 'Analytik',
     emoji: '📊',
+    image: '/roboti/emil.png',
     color: 'bg-blue-500',
+    accent: 'blue',
     description:
       'Pořád něco měří. Na každou otázku odpoví grafem. Nikdo jeho grafům nerozumí. Ale vypadají důležitě.',
     personality: [
@@ -185,7 +203,9 @@ export const robots: Robot[] = [
     name: 'Roboš',
     role: 'Stážista',
     emoji: '🤪',
+    image: '/roboti/jozin.png', // placeholder, dorazí později
     color: 'bg-pink-500',
+    accent: 'pink',
     description:
       'Nikdo neví, kdo ho zaměstnal. Občas něco udělá geniálně. Občas pošle newsletter s předmětem "Ahoj :)" — bez textu.',
     personality: [
@@ -208,6 +228,7 @@ export const jozin = {
   name: 'Jožin',
   role: 'Firemní kocour',
   emoji: '🐈',
+  image: '/roboti/jozin.png',
   color: 'bg-amber-500',
   description:
     'Nemá žádnou práci. Nikdo neví, proč je na výplatní pásce. Ale když se něco rozbije, vždycky sedí vedle serveru.',
