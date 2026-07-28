@@ -2,7 +2,6 @@ import Hero from '@/components/Hero';
 import RobotsPage from '@/components/RobotsPage';
 import ShiftBoard from '@/components/ShiftBoard';
 import SceneMailRewrite from '@/components/SceneMailRewrite';
-import NewsletterSignup from '@/components/NewsletterSignup';
 
 export default function Home() {
   return (
@@ -23,16 +22,8 @@ export default function Home() {
         <hr className="border-gray-200" />
       </div>
 
-      {/* Scene: Pepa, napiš za mě */}
+      {/* Scene: Pepo, napiš za mě */}
       <SceneMailRewrite />
-
-      {/* Divider */}
-      <div className="max-w-3xl mx-auto px-4">
-        <hr className="border-gray-200" />
-      </div>
-
-      {/* Newsletter = zůstaň v obraze */}
-      <NewsletterSignup />
 
       {/* Divider */}
       <div className="max-w-3xl mx-auto px-4">

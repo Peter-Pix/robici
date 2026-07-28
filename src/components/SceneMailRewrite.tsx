@@ -95,7 +95,7 @@ export default function SceneMailRewrite() {
         <div className="flex items-center gap-2 mb-2">
           <span className="h-2.5 w-2.5 rounded-full bg-green-500 animate-pulse" />
           <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-            Pepa, napiš za mě
+            Pepo, napiš za mě
           </span>
         </div>
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
