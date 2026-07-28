@@ -198,29 +198,6 @@ export const robots: Robot[] = [
     status: 'inactive',
     mood: 6,
   },
-  {
-    id: 'robos',
-    name: 'Roboš',
-    role: 'Stážista',
-    emoji: '🤪',
-    image: '/roboti/jozin.png', // placeholder, dorazí později
-    color: 'bg-pink-500',
-    accent: 'pink',
-    description:
-      'Nikdo neví, kdo ho zaměstnal. Občas něco udělá geniálně. Občas pošle newsletter s předmětem "Ahoj :)" — bez textu.',
-    personality: [
-      'Nikdo neví, kdo ho zaměstnal',
-      'Občas geniální, občas katastrofa',
-      'Záhadný původ',
-    ],
-    catchphrases: [
-      'Ahoj :)',
-      'Já to zvládnu!',
-      '...co se stalo?',
-    ],
-    status: 'inactive',
-    mood: 7,
-  },
 ];
 
 export const jozin = {
