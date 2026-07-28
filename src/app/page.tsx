@@ -1,7 +1,7 @@
 import Hero from '@/components/Hero';
 import RobotsPage from '@/components/RobotsPage';
 import ShiftBoard from '@/components/ShiftBoard';
-import ChatWidget from '@/components/ChatWidget';
+import SceneMailRewrite from '@/components/SceneMailRewrite';
 import NewsletterSignup from '@/components/NewsletterSignup';
 
 export default function Home() {
@@ -23,8 +23,8 @@ export default function Home() {
         <hr className="border-gray-200" />
       </div>
 
-      {/* Chat = poslední konverzace */}
-      <ChatWidget />
+      {/* Scene: Pepa, napiš za mě */}
+      <SceneMailRewrite />
 
       {/* Divider */}
       <div className="max-w-3xl mx-auto px-4">
