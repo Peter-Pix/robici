@@ -28,50 +28,50 @@ ROBOT_PROFILES = {
     "pepa": {
         "role": "Copywriter — píše texty",
         "needs": ["creative writing", "style adaptation", "czech language"],
-        "recommended": "deepseek-v4-flash",
-        "reason": "Rychlý, levný, píše dobře česky. 6.9s na mail. Level 2 usage.",
+        "recommended": "kimi-k2.7-code",
+        "reason": "Skvělý na češtinu, kreativní, dává víc variant. Level 4, ale stojí za to.",
     },
     "marie": {
         "role": "Kontrolor — hledá chyby a nejistoty",
         "needs": ["attention to detail", "uncertainty flagging", "czech grammar"],
-        "recommended": "gemma4:31b",
-        "reason": "Nejrychlejší (1.4s), dobře flaguje ⚠️. Level 2 usage. Perfektní pro kontrolu.",
+        "recommended": "minimax-m2.7",
+        "reason": "Dobře flaguje ⚠️, dává kontext. Level 3. Rychlejší než kimi.",
     },
     "franta": {
         "role": "Obchodník — navrhuje nabídky",
         "needs": ["persuasive writing", "sales", "optimism"],
-        "recommended": "deepseek-v4-flash",
-        "reason": "Rychlý, kreativní, zvládá víc variant. Level 2.",
+        "recommended": "kimi-k2.7-code",
+        "reason": "Kreativní, víc variant, lepší čeština. Level 4.",
     },
     "mirek": {
         "role": "Technik — opravuje chyby",
         "needs": ["debugging", "technical accuracy", "code"],
         "recommended": "kimi-k2.7-code",
-        "reason": "Nejlepší na kód a technický text. Level 4 — používat jen když je potřeba.",
+        "reason": "Nejlepší na kód a technický text. Level 4. Používat volně.",
     },
     "anicka": {
         "role": "Péče o zákazníky — odpovídá na stížnosti",
         "needs": ["empathy", "apology", "customer service"],
-        "recommended": "deepseek-v4-flash",
-        "reason": "Rychlý, empatický, zvládá češtinu. Level 2.",
+        "recommended": "minimax-m3",
+        "reason": "Empatický, přirozený, dává víc variant. Level 4, ale pro zákazníky stojí za to.",
     },
     "gustav": {
         "role": "QA Tester — testuje výstupy",
         "needs": ["validation", "edge cases", "breaking things"],
-        "recommended": "gemma4:31b",
-        "reason": "Rychlý, přesný, dobře flaguje problémy. Level 2.",
+        "recommended": "minimax-m2.5",
+        "reason": "Rychlý, přesný, dobře flaguje problémy. Level 3.",
     },
     "betka": {
         "role": "Grafička — formátuje dokumenty",
         "needs": ["formatting", "structure", "visual layout"],
-        "recommended": "deepseek-v4-flash",
-        "reason": "Dobrý na strukturování textu. Level 2.",
+        "recommended": "minimax-m2.7",
+        "reason": "Dobrý na strukturování textu. Level 3.",
     },
     "emil": {
         "role": "Analytik — analyzuje data",
         "needs": ["data analysis", "statistics", "charts"],
         "recommended": "deepseek-v4-flash",
-        "reason": "Rychlý, analytický. Level 2.",
+        "reason": "Rychlý, analytický, levný. Level 2. Na analýzu stačí.",
     },
 }
 
@@ -196,16 +196,21 @@ def show_usage_report():
     print("\n\n💡 RECOMMENDATION:")
     print("-" * 60)
     print("""
-  Use deepseek-v4-flash as the DEFAULT model for most Robíci.
-  It's fast (6.9s), good at Czech, and Level 2 usage.
+  Use kimi-k2.7-code for Pepa, Franta, Mirek (creative/technical).
+  Best Czech quality, multiple variants. Level 4, but worth it.
 
-  Use gemma4:31b for Marie and Gustav (control/review).
-  It's the fastest (1.4s) and good at flagging uncertainty.
+  Use minimax-m2.7 for Marie, Bětka (control/formatting).
+  Good at flagging uncertainty, faster than kimi. Level 3.
 
-  Use kimi-k2.7-code ONLY for Mirek (technical tasks).
-  It's Level 4 — expensive, use sparingly.
+  Use minimax-m2.5 for Gustav (testing).
+  Fast, precise, good at finding problems. Level 3.
 
-  Free tier on Ollama cloud should be enough for Fáze 0-1.
+  Use minimax-m3 for Anička (customer service).
+  Empathetic, natural, multiple variants. Level 4.
+
+  Use deepseek-v4-flash for Emil (analysis).
+  Fast, cheap, analytical. Level 2.
+
   At 100 requests/day, estimated cost: ~${total_cost:.2f}/month.
 """)
 
