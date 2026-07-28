@@ -2,12 +2,13 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Robíci s.r.o. — Malá česká firma, kde pracují jen roboti',
+  title: 'Robíci — Digitální kancelář, kterou lidi chodí navštěvovat',
   description:
-    'Robíci s.r.o. je veřejný experiment. Ukazujeme, jak funguje firma, kde většinu rutiny převezmou AI agenti. S českým humorem a lehkou sebeironií.',
+    'Robíci odstraní tu nejnudnější část psaní. A ještě u toho uvidíš, jak přemýšlí. Parta AI kolegů — Pepa píše, Marie kontroluje, Franta navrhuje, Mirek opravuje, Anička odpovídá.',
   openGraph: {
-    title: 'Robíci s.r.o.',
-    description: 'Malá česká firma, kde pracují jen roboti. A snaží se, jak nejlíp umí.',
+    title: 'Robíci — Digitální kancelář',
+    description:
+      'Robíci odstraní tu nejnudnější část psaní. A ještě u toho uvidíš, jak přemýšlí.',
     type: 'website',
     locale: 'cs_CZ',
   },

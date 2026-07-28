@@ -2,13 +2,20 @@ import Hero from '@/components/Hero';
 import RobotsPage from '@/components/RobotsPage';
 import ShiftBoard from '@/components/ShiftBoard';
 import ChatWidget from '@/components/ChatWidget';
+import NewsletterSignup from '@/components/NewsletterSignup';
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+      {/* Hero = živý stream kanceláře */}
       <Hero />
 
-      {/* Shift Board */}
+      {/* Divider */}
+      <div className="max-w-3xl mx-auto px-4">
+        <hr className="border-gray-200" />
+      </div>
+
+      {/* Shift Board = co se děje teď */}
       <ShiftBoard />
 
       {/* Divider */}
@@ -16,7 +23,7 @@ export default function Home() {
         <hr className="border-gray-200" />
       </div>
 
-      {/* Chat */}
+      {/* Chat = poslední konverzace */}
       <ChatWidget />
 
       {/* Divider */}
@@ -24,13 +31,21 @@ export default function Home() {
         <hr className="border-gray-200" />
       </div>
 
-      {/* Robots */}
+      {/* Newsletter = zůstaň v obraze */}
+      <NewsletterSignup />
+
+      {/* Divider */}
+      <div className="max-w-3xl mx-auto px-4">
+        <hr className="border-gray-200" />
+      </div>
+
+      {/* Robots = seznamte se s týmem */}
       <RobotsPage />
 
       {/* Footer */}
       <footer className="py-12 px-4 text-center text-sm text-gray-400">
         <p>
-          Robíci s.r.o. — Veřejný experiment. Ukazujeme, co funguje, co selže a co se cestou naučíme.
+          Robíci — první digitální kancelář, kterou lidi chodí navštěvovat, i když zrovna nic nepotřebují.
         </p>
         <p className="mt-1">
           🐈 Jožin je na výplatní pásce. Nikdo neví proč.
