@@ -58,8 +58,8 @@ ROBOT_PROFILES = {
     "gustav": {
         "role": "QA Tester — testuje výstupy",
         "needs": ["validation", "edge cases", "breaking things"],
-        "recommended": "minimax-m2.5",
-        "reason": "Rychlý, přesný, dobře flaguje problémy. Level 3.",
+        "recommended": "minimax-m2.7",
+        "reason": "Náhrada za m2.5 (končí 31.7.). Dobře flaguje problémy. Level 3.",
     },
     "betka": {
         "role": "Grafička — formátuje dokumenty",
@@ -202,8 +202,8 @@ def show_usage_report():
   Use minimax-m2.7 for Marie, Bětka (control/formatting).
   Good at flagging uncertainty, faster than kimi. Level 3.
 
-  Use minimax-m2.5 for Gustav (testing).
-  Fast, precise, good at finding problems. Level 3.
+  Use minimax-m2.7 for Gustav (testing).
+  Náhrada za m2.5 (končí 31.7.). Good at finding problems. Level 3.
 
   Use minimax-m3 for Anička (customer service).
   Empathetic, natural, multiple variants. Level 4.
