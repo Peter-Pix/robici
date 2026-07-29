@@ -2,6 +2,8 @@
 
 import { useState, useRef } from 'react';
 import Image from 'next/image';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { activeRobots } from '@/data/robots/robots';
 
 // === Typy ===
@@ -111,11 +113,45 @@ const TOOLS: ToolConfig[] = [
   },
 ];
 
+// Mapování jmen Robíků na obrázky
 const robotImages: Record<string, string> = {};
 activeRobots.forEach((r) => {
   const name = r.name.split(' ')[0];
   robotImages[name] = r.image;
 });
+
+// Výchozí obrázek pro Tým (použijeme Pepu jako placeholder)
+robotImages['Tým'] = robotImages['Pepa'] || '';
+
+// === Markdown renderer ===
+const markdownComponents = {
+  h1: ({ children }: any) => <h1 className="text-lg font-bold text-gray-900 mt-4 mb-2">{children}</h1>,
+  h2: ({ children }: any) => <h2 className="text-base font-bold text-gray-900 mt-3 mb-1">{children}</h2>,
+  h3: ({ children }: any) => <h3 className="text-sm font-bold text-gray-900 mt-2 mb-1">{children}</h3>,
+  p: ({ children }: any) => <p className="mb-2 last:mb-0">{children}</p>,
+  ul: ({ children }: any) => <ul className="list-disc list-inside mb-2 space-y-1">{children}</ul>,
+  ol: ({ children }: any) => <ol className="list-decimal list-inside mb-2 space-y-1">{children}</ol>,
+  li: ({ children }: any) => <li className="text-gray-700">{children}</li>,
+  strong: ({ children }: any) => <strong className="font-bold text-gray-900">{children}</strong>,
+  em: ({ children }: any) => <em className="italic text-gray-600">{children}</em>,
+  code: ({ children }: any) => (
+    <code className="px-1.5 py-0.5 rounded bg-gray-100 text-gray-800 text-xs font-mono">{children}</code>
+  ),
+  pre: ({ children }: any) => (
+    <pre className="p-3 rounded-xl bg-gray-100 text-gray-800 text-xs font-mono overflow-x-auto mb-2">{children}</pre>
+  ),
+  blockquote: ({ children }: any) => (
+    <blockquote className="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-2">{children}</blockquote>
+  ),
+  hr: () => <hr className="my-3 border-gray-200" />,
+  table: ({ children }: any) => (
+    <div className="overflow-x-auto mb-2">
+      <table className="w-full text-sm border-collapse">{children}</table>
+    </div>
+  ),
+  th: ({ children }: any) => <th className="border border-gray-200 px-3 py-2 bg-gray-50 text-left font-semibold text-gray-700">{children}</th>,
+  td: ({ children }: any) => <td className="border border-gray-200 px-3 py-2 text-gray-700">{children}</td>,
+};
 
 // === Komponenta pro jeden nástroj ===
 function ToolCard({ config }: { config: ToolConfig }) {
@@ -149,7 +185,6 @@ function ToolCard({ config }: { config: ToolConfig }) {
       }
 
       setResult(data);
-      // Scroll to output
       setTimeout(() => outputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
     } catch (e: any) {
       setError(e.message);
@@ -167,7 +202,7 @@ function ToolCard({ config }: { config: ToolConfig }) {
 
   return (
     <div className={`rounded-2xl border ${config.color} p-6`}>
-      {/* Header */}
+      {/* Header s obrázkem robota */}
       <div className="flex items-center gap-3 mb-4">
         <div className="relative w-12 h-12 flex-shrink-0">
           {robotImages[config.robik] && (
@@ -188,7 +223,7 @@ function ToolCard({ config }: { config: ToolConfig }) {
         </div>
       </div>
 
-      {/* Módy (pokud existují) */}
+      {/* Módy */}
       {config.modes && (
         <div className="flex flex-wrap gap-2 mb-4">
           {config.modes.map((m) => (
@@ -239,7 +274,17 @@ function ToolCard({ config }: { config: ToolConfig }) {
       {loading && !result && (
         <div className="p-4 rounded-xl bg-white border border-gray-200 animate-pulse">
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-lg">{config.emoji}</span>
+            <div className="relative w-8 h-8">
+              {robotImages[config.robik] && (
+                <Image
+                  src={robotImages[config.robik]}
+                  alt={config.robik}
+                  width={32}
+                  height={32}
+                  className="w-full h-full object-contain"
+                />
+              )}
+            </div>
             <span className="text-sm text-gray-500">{config.robik} přemýšlí...</span>
           </div>
           <div className="h-2 bg-gray-200 rounded w-3/4 mb-2" />
@@ -247,22 +292,45 @@ function ToolCard({ config }: { config: ToolConfig }) {
         </div>
       )}
 
-      {/* Result */}
+      {/* Result — s obrázkem robota a Markdown renderem */}
       {result && (
         <div ref={outputRef} className="p-4 rounded-xl bg-white border border-gray-200 animate-fadeIn">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-lg">{result.emoji}</span>
-            <span className="font-semibold text-gray-900 text-sm">{result.robik}</span>
-            <span className="text-xs text-gray-400">⏱ {result.duration.toFixed(1)}s</span>
+          {/* Hlavička s obrázkem robota */}
+          <div className="flex items-center gap-2 mb-3 pb-3 border-b border-gray-100">
+            <div className="relative w-8 h-8 flex-shrink-0">
+              {robotImages[result.robik] && (
+                <Image
+                  src={robotImages[result.robik]}
+                  alt={result.robik}
+                  width={32}
+                  height={32}
+                  className="w-full h-full object-contain"
+                />
+              )}
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-gray-900 text-sm">
+                  {result.emoji} {result.robik}
+                </span>
+                <span className="text-xs text-gray-400">⏱ {result.duration.toFixed(1)}s</span>
+              </div>
+            </div>
           </div>
-          <div className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">
-            {result.output}
+
+          {/* Markdown výstup */}
+          <div className="text-sm text-gray-700 leading-relaxed prose prose-sm max-w-none">
+            <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+              {result.output}
+            </ReactMarkdown>
           </div>
-          <div className="mt-3 flex items-center gap-2 text-xs text-gray-400">
+
+          {/* Footer */}
+          <div className="mt-3 pt-3 border-t border-gray-100 flex items-center gap-2 text-xs text-gray-400">
             <span>Zbývá: {result.remaining}/{config.limit} dnes</span>
             <button
               onClick={() => { setResult(null); setInput(''); }}
-              className="text-gray-400 hover:text-gray-600 transition-colors"
+              className="text-gray-400 hover:text-gray-600 transition-colors ml-auto"
             >
               × Smazat
             </button>

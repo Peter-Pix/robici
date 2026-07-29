@@ -1,6 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { activeRobots } from '@/data/robots/robots';
+
+const robotImages: Record<string, string> = {};
+activeRobots.forEach((r) => {
+  const name = r.name.split(' ')[0];
+  robotImages[name] = r.image;
+});
+robotImages['Tým'] = robotImages['Pepa'] || '';
 
 interface ToolMetrics {
   count: number;
@@ -122,8 +131,23 @@ export default function MetricsBoard() {
               <tbody>
                 {Object.entries(data.byTool).map(([tool, metrics]) => (
                   <tr key={tool} className="border-b border-gray-50 hover:bg-gray-50">
-                    <td className="p-4 font-medium text-gray-900">
-                      {TOOL_NAMES[tool] || tool}
+                    <td className="p-4">
+                      <div className="flex items-center gap-2">
+                        <div className="relative w-7 h-7 flex-shrink-0">
+                          {robotImages[TOOL_NAMES[tool]?.split(' ')[1] || ''] && (
+                            <Image
+                              src={robotImages[TOOL_NAMES[tool]?.split(' ')[1] || '']}
+                              alt={tool}
+                              width={28}
+                              height={28}
+                              className="w-full h-full object-contain"
+                            />
+                          )}
+                        </div>
+                        <span className="font-medium text-gray-900">
+                          {TOOL_NAMES[tool] || tool}
+                        </span>
+                      </div>
                     </td>
                     <td className="p-4 text-right text-gray-700">{metrics.count}×</td>
                     <td className="p-4 text-right text-gray-700">{metrics.avgDuration}s</td>
