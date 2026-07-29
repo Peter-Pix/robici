@@ -71,7 +71,7 @@ const TOOLS: ToolConfig[] = [
     ],
   },
   {
-    id: 'emil-summarize', robik: 'Emil', emoji: '📊',
+    id: 'emil-summarize', robik: 'Emil', emoji: '📈',
     title: 'Shrň text',
     hint: 'Emil udělá z dlouhého textu strukturované shrnutí.',
     placeholder: 'Vlož text nebo zápis z meetingu...',
