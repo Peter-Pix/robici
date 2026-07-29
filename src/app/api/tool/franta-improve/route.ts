@@ -1,6 +1,7 @@
 // /api/tool/franta-improve — 💰 Franta: Vylepši nabídku
 import { NextRequest, NextResponse } from 'next/server';
 import { ollamaCall, checkIpLimit } from '@/lib/ollama';
+import { getIp, logToolUsage } from '@/lib/tool-logger';
 
 export const maxDuration = 60;
 export const dynamic = 'force-dynamic';
@@ -14,24 +15,29 @@ const MODE_PROMPTS: Record<string, string> = {
 };
 
 export async function POST(request: NextRequest) {
+  const ip = getIp(request);
+
   try {
     const body = await request.json();
     const text: string = body.text?.trim() || '';
     const mode: string = body.mode || 'presvedcivejsi';
 
     if (!text) {
+      logToolUsage(request, 'franta-improve', 'validation', { inputLength: 0, mode });
       return NextResponse.json({ error: 'Vlož nabídku, kterou chceš vylepšit.' }, { status: 400 });
     }
     if (text.length > 1000) {
+      logToolUsage(request, 'franta-improve', 'validation', { inputLength: text.length, mode });
       return NextResponse.json({ error: 'Franta nestíhá. Max 1000 znaků.' }, { status: 400 });
     }
     if (!MODE_PROMPTS[mode]) {
+      logToolUsage(request, 'franta-improve', 'validation', { inputLength: text.length, mode });
       return NextResponse.json({ error: 'Neznámý mód. Zkus: presvedcivejsi, predmety, cta, zkratit, pratelsky.' }, { status: 400 });
     }
 
-    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
     const limit = checkIpLimit(ip, 'franta-improve');
     if (!limit.allowed) {
+      logToolUsage(request, 'franta-improve', 'limit', { inputLength: text.length, mode });
       return NextResponse.json({ error: `Dnes už jsi Frantu využil 3×. Zítra zase.`, remaining: 0 }, { status: 429 });
     }
 
@@ -46,6 +52,13 @@ export async function POST(request: NextRequest) {
       `Podívej se na tuhle nabídku a vylepši ji: "${text}"`
     );
 
+    logToolUsage(request, 'franta-improve', 'ok', {
+      inputLength: text.length,
+      outputLength: result.content.length,
+      duration: result.duration,
+      mode,
+    });
+
     return NextResponse.json({
       robik: 'Franta',
       emoji: '💰',
@@ -56,6 +69,10 @@ export async function POST(request: NextRequest) {
       remaining: limit.remaining,
     });
   } catch (error: any) {
+    logToolUsage(request, 'franta-improve', 'error', {
+      inputLength: 0,
+      errorMessage: error.message,
+    });
     return NextResponse.json({ error: `Něco se rozbilo: ${error.message}` }, { status: 500 });
   }
 }
