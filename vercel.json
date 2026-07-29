@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "api/tool/*.ts": {
+      "maxDuration": 60
+    },
+    "api/scene/*.ts": {
+      "maxDuration": 60
+    }
+  }
+}

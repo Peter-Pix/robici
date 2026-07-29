@@ -163,9 +163,19 @@ function ToolCard({ config, isOpen, onToggle }: { config: ToolConfig; isOpen: bo
         body: JSON.stringify(body),
       });
       const data = await res.json();
+      console.log('[Robíci] API response:', { 
+        tool: config.id, 
+        status: res.status,
+        keys: Object.keys(data),
+        hasOutput: !!data.output, 
+        outputLen: data.output?.length,
+        hasError: !!data.error,
+      });
       if (!res.ok) throw new Error(data.error || 'Něco se rozbilo');
-      console.log('[Robíci] API response:', { tool: config.id, hasOutput: !!data.output, outputLen: data.output?.length });
-      if (!data.output) throw new Error('Prázdná odpověď od Robíka');
+      if (!data.output) {
+        console.error('[Robíci] Missing output in response:', data);
+        throw new Error('Robík neodpověděl. Zkus to znovu.');
+      }
       setResult(data);
       setTimeout(() => outputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
     } catch (e: any) {
