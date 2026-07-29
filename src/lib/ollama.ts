@@ -3,12 +3,17 @@ import https from 'node:https';
 
 const OLLAMA_URL = 'https://ollama.com/api/chat';
 
+export interface OllamaResult {
+  content: string;
+  duration: number;
+}
+
 export async function ollamaCall(
   model: string,
   systemPrompt: string,
   userMessage: string,
   timeoutMs = 30000
-): Promise<{ content: string; duration: number }> {
+): Promise<OllamaResult> {
   return new Promise((resolve, reject) => {
     const start = Date.now();
     const body = JSON.stringify({
@@ -104,4 +109,53 @@ export function checkIpLimit(
 // Reset IP limit (pro testování)
 export function resetIpLimits(): void {
   ipLimits.clear();
+}
+
+/**
+ * Model-doubling / revision pipeline.
+ * 1) draftModel napíše draft podle draft promptu
+ * 2) criticModel zhodnotí draft podle critic promptu
+ * 3) reviserModel opraví draft podle kritiky podle reviser promptu
+ *
+ * Vrací objekt se všemi třemi kroky + finálním výstupem.
+ */
+export async function callWithRevision(
+  draftModel: string,
+  criticModel: string,
+  reviserModel: string,
+  draftSystem: string,
+  draftUser: string,
+  criticSystem: string,
+  reviserSystem: string,
+  timeoutMs = 60000
+): Promise<{
+  draft: OllamaResult;
+  critique: OllamaResult;
+  revision: OllamaResult;
+  final: string;
+  totalDuration: number;
+}> {
+  const draft = await ollamaCall(draftModel, draftSystem, draftUser, timeoutMs);
+
+  const critique = await ollamaCall(
+    criticModel,
+    criticSystem,
+    `Zkontroluj tento text a napiš konkrétní připomínky, které povedou k opravě.\n\n---\n\n${draft.content}`,
+    timeoutMs
+  );
+
+  const revision = await ollamaCall(
+    reviserModel,
+    reviserSystem,
+    `Původní zadání:\n${draftUser}\n\n---\n\nPůvodní draft:\n${draft.content}\n\n---\n\nKritika:\n${critique.content}\n\n---\n\nOprav draft podle kritiky. Zachovej formát a účel.`,
+    timeoutMs
+  );
+
+  return {
+    draft,
+    critique,
+    revision,
+    final: revision.content,
+    totalDuration: draft.duration + critique.duration + revision.duration,
+  };
 }
