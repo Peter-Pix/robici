@@ -6,7 +6,6 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { activeRobots } from '@/data/robots/robots';
 
-// === Typy ===
 interface ToolResult {
   robik: string;
   emoji: string;
@@ -25,7 +24,6 @@ interface ToolConfig {
   maxChars: number;
   limit: number;
   modes?: { key: string; label: string }[];
-  accent: string;
 }
 
 const TOOLS: ToolConfig[] = [
@@ -35,7 +33,6 @@ const TOOLS: ToolConfig[] = [
     desc: 'Pepa napíše 3 varianty — formální, přátelskou a stručnou.',
     placeholder: 'Vlož text, který chceš přepsat...',
     maxChars: 800, limit: 3,
-    accent: 'from-blue-500 to-blue-600',
   },
   {
     id: 'marie-check', robik: 'Marie', emoji: '📋',
@@ -43,7 +40,11 @@ const TOOLS: ToolConfig[] = [
     desc: 'Marie zkontroluje text, najde překlepy, dlouhé věty a dá skóre.',
     placeholder: 'Vlož text ke kontrole...',
     maxChars: 2000, limit: 3,
-    accent: 'from-purple-500 to-purple-600',
+    modes: [
+      { key: 'gramatika', label: 'Gramatika' },
+      { key: 'styl', label: 'Styl' },
+      { key: 'skore', label: 'Skóre' },
+    ],
   },
   {
     id: 'anicka-reply', robik: 'Anička', emoji: '❤️',
@@ -59,7 +60,6 @@ const TOOLS: ToolConfig[] = [
       { key: 'odmítnout', label: 'Odmítnout' },
       { key: 'podekovat', label: 'Poděkovat' },
     ],
-    accent: 'from-pink-500 to-rose-500',
   },
   {
     id: 'franta-improve', robik: 'Franta', emoji: '💰',
@@ -74,7 +74,6 @@ const TOOLS: ToolConfig[] = [
       { key: 'zkratit', label: 'Zkrátit' },
       { key: 'pratelsky', label: 'Přátelštější' },
     ],
-    accent: 'from-emerald-500 to-emerald-600',
   },
   {
     id: 'emil-summarize', robik: 'Emil', emoji: '📊',
@@ -82,7 +81,6 @@ const TOOLS: ToolConfig[] = [
     desc: 'Emil udělá z dlouhého textu strukturované shrnutí.',
     placeholder: 'Vlož text nebo zápis z meetingu...',
     maxChars: 5000, limit: 3,
-    accent: 'from-amber-500 to-orange-500',
   },
   {
     id: 'team-breakdown', robik: 'Tým', emoji: '🧠',
@@ -90,11 +88,9 @@ const TOOLS: ToolConfig[] = [
     desc: 'Celý tým Robíků rozebere tvůj nápad ze všech stran.',
     placeholder: 'Napiš svůj nápad (max 500 znaků)...',
     maxChars: 500, limit: 1,
-    accent: 'from-indigo-500 to-indigo-600',
   },
 ];
 
-// Mapování jmen Robíků na obrázky
 const robotImages: Record<string, string> = {};
 activeRobots.forEach((r) => {
   const name = r.name.split(' ')[0];
@@ -102,18 +98,13 @@ activeRobots.forEach((r) => {
 });
 robotImages['Tým'] = robotImages['Pepa'] || '';
 
-// === Kulatý avatar ===
 function RobotAvatar({ name, size = 40 }: { name: string; size?: number }) {
   const img = robotImages[name];
   if (!img) return null;
   return (
     <div
-      className="relative flex-shrink-0 overflow-hidden bg-gray-100"
-      style={{
-        width: size,
-        height: size,
-        borderRadius: size / 2,
-      }}
+      className="relative flex-shrink-0 overflow-hidden bg-[#f5f5f7]"
+      style={{ width: size, height: size, borderRadius: size / 2 }}
     >
       <Image
         src={img}
@@ -126,41 +117,31 @@ function RobotAvatar({ name, size = 40 }: { name: string; size?: number }) {
   );
 }
 
-// === Markdown renderer ===
 const markdownComponents = {
   h1: ({ children }: any) => (
-    <h1 className="text-[17px] font-semibold text-[#1d1d1f] mt-5 mb-2 tracking-[-0.01em]">{children}</h1>
+    <h1 className="text-[17px] font-semibold text-[#1d1d1f] mt-5 mb-2">{children}</h1>
   ),
   h2: ({ children }: any) => (
-    <h2 className="text-[15px] font-semibold text-[#1d1d1f] mt-4 mb-1.5 tracking-[-0.01em]">{children}</h2>
+    <h2 className="text-[15px] font-semibold text-[#1d1d1f] mt-4 mb-1.5">{children}</h2>
   ),
   h3: ({ children }: any) => (
     <h3 className="text-[14px] font-semibold text-[#1d1d1f] mt-3 mb-1">{children}</h3>
   ),
   p: ({ children }: any) => (
-    <p className="text-[14px] leading-[1.5] text-[#515154] mb-2.5 last:mb-0">{children}</p>
+    <p className="text-[14px] leading-[1.55] text-[#515154] mb-2.5 last:mb-0">{children}</p>
   ),
   ul: ({ children }: any) => (
-    <ul className="space-y-1.5 mb-3 pl-0">{children}</ul>
+    <ul className="space-y-1 mb-3">{children}</ul>
   ),
   ol: ({ children }: any) => (
-    <ol className="space-y-1.5 mb-3 pl-5 list-decimal text-[14px] text-[#515154]">{children}</ol>
+    <ol className="space-y-1 mb-3 list-decimal pl-5 text-[14px] text-[#515154]">{children}</ol>
   ),
-  li: ({ children }: any) => {
-    // Check if children contain a nested ul (for multi-level lists)
-    const hasNested = Array.isArray(children) && children.some(
-      (c: any) => c?.type === 'ul' || c?.type?.displayName === 'ul'
-    );
-    if (hasNested) {
-      return <li className="text-[14px] text-[#515154] leading-[1.5]">{children}</li>;
-    }
-    return (
-      <li className="flex items-start gap-2.5 text-[14px] text-[#515154] leading-[1.5]">
-        <span className="text-[#c7c7cc] mt-[5px] flex-shrink-0">•</span>
-        <span>{children}</span>
-      </li>
-    );
-  },
+  li: ({ children }: any) => (
+    <li className="flex items-start gap-2 text-[14px] text-[#515154] leading-[1.5]">
+      <span className="text-[#c7c7cc] mt-[5px] flex-shrink-0 select-none">•</span>
+      <span className="flex-1">{children}</span>
+    </li>
+  ),
   strong: ({ children }: any) => (
     <strong className="font-semibold text-[#1d1d1f]">{children}</strong>
   ),
@@ -168,10 +149,10 @@ const markdownComponents = {
     <em className="italic text-[#86868b]">{children}</em>
   ),
   code: ({ children }: any) => (
-    <code className="px-[6px] py-[2px] rounded-md bg-[#f5f5f7] text-[#1d1d1f] text-[13px] font-mono">{children}</code>
+    <code className="px-[5px] py-[1px] rounded bg-[#f5f5f7] text-[#1d1d1f] text-[13px] font-mono">{children}</code>
   ),
   pre: ({ children }: any) => (
-    <pre className="p-4 rounded-xl bg-[#f5f5f7] text-[#1d1d1f] text-[13px] font-mono overflow-x-auto mb-3 leading-[1.6]">{children}</pre>
+    <pre className="p-3.5 rounded-xl bg-[#f5f5f7] text-[#1d1d1f] text-[13px] font-mono overflow-x-auto mb-3 leading-[1.6]">{children}</pre>
   ),
   blockquote: ({ children }: any) => (
     <blockquote className="border-l-[3px] border-[#e8e8ed] pl-4 italic text-[#86868b] text-[14px] mb-3 leading-[1.5]">{children}</blockquote>
@@ -190,7 +171,6 @@ const markdownComponents = {
   ),
 };
 
-// === Komponenta pro jeden nástroj ===
 function ToolCard({ config }: { config: ToolConfig }) {
   const [input, setInput] = useState('');
   const [mode, setMode] = useState(config.modes?.[0]?.key || '');
@@ -234,25 +214,23 @@ function ToolCard({ config }: { config: ToolConfig }) {
   };
 
   return (
-    <div className="bg-white rounded-[20px] border border-[#e8e8ed] overflow-hidden shadow-sm">
-      {/* Header s gradient akcentem */}
-      <div className={`bg-gradient-to-r ${config.accent} px-5 py-4`}>
-        <div className="flex items-center gap-3">
-          <RobotAvatar name={config.robik} size={44} />
-          <div className="flex-1 min-w-0">
-            <h3 className="text-[17px] font-semibold text-white tracking-[-0.01em]">
-              {config.emoji} {config.robik}
-            </h3>
-            <p className="text-[13px] text-white/80">{config.title}</p>
-          </div>
+    <div className="bg-white rounded-2xl border border-[#e8e8ed] overflow-hidden">
+      {/* Header — čistý, jen avatar + jméno */}
+      <div className="flex items-center gap-3 px-5 pt-5 pb-3">
+        <RobotAvatar name={config.robik} size={44} />
+        <div className="flex-1 min-w-0">
+          <h3 className="text-[17px] font-semibold text-[#1d1d1f]">
+            {config.emoji} {config.robik}
+          </h3>
+          <p className="text-[13px] text-[#86868b]">{config.title}</p>
         </div>
       </div>
 
-      <div className="p-5">
+      <div className="px-5 pb-5">
         {/* Popis */}
-        <p className="text-[14px] text-[#86868b] mb-4 leading-[1.4]">{config.desc}</p>
+        <p className="text-[13px] text-[#86868b] mb-4 leading-[1.4]">{config.desc}</p>
 
-        {/* Módy */}
+        {/* Módy — čistý pills */}
         {config.modes && (
           <div className="flex flex-wrap gap-1.5 mb-4">
             {config.modes.map((m) => (
@@ -279,14 +257,14 @@ function ToolCard({ config }: { config: ToolConfig }) {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={config.placeholder}
-            className="flex-1 px-4 py-3 rounded-xl border border-[#e8e8ed] bg-white text-[#1d1d1f] placeholder-[#c7c7cc] focus:outline-none focus:ring-2 focus:ring-[#1d1d1f]/20 focus:border-[#1d1d1f] text-[14px] transition-all"
+            className="flex-1 px-4 py-2.5 rounded-xl border border-[#e8e8ed] bg-white text-[#1d1d1f] placeholder-[#c7c7cc] focus:outline-none focus:ring-2 focus:ring-[#1d1d1f]/10 focus:border-[#1d1d1f] text-[14px] transition-all"
             disabled={loading}
             maxLength={config.maxChars}
           />
           <button
             onClick={handleSubmit}
             disabled={loading || !input.trim()}
-            className="px-5 py-3 rounded-xl bg-[#1d1d1f] text-white font-medium text-[14px] hover:bg-[#2d2d2f] disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-[0.97] whitespace-nowrap"
+            className="px-5 py-2.5 rounded-xl bg-[#1d1d1f] text-white font-medium text-[14px] hover:bg-[#2d2d2f] disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-[0.97] whitespace-nowrap"
           >
             {loading ? (
               <span className="flex items-center gap-2">
@@ -299,7 +277,7 @@ function ToolCard({ config }: { config: ToolConfig }) {
 
         {/* Error */}
         {error && (
-          <div className="mb-3 p-3.5 rounded-xl bg-[#fff2f2] border border-[#ffd7d7] text-[#c41e1e] text-[13px] leading-[1.4]">
+          <div className="mb-3 p-3.5 rounded-xl bg-[#fef2f2] border border-[#fecaca] text-[#dc2626] text-[13px] leading-[1.4]">
             {error}
           </div>
         )}
@@ -357,7 +335,6 @@ function ToolCard({ config }: { config: ToolConfig }) {
   );
 }
 
-// === Hlavní stránka nástrojů ===
 export default function ToolsPage() {
   return (
     <section className="py-16 px-4">
@@ -376,15 +353,14 @@ export default function ToolsPage() {
           Každý nástroj {TOOLS[0].limit}× denně zdarma. Žádná registrace.
         </p>
 
-        {/* Grid */}
-        <div className="space-y-5">
+        <div className="space-y-4">
           {TOOLS.map((tool) => (
             <ToolCard key={tool.id} config={tool} />
           ))}
         </div>
 
         {/* Footer */}
-        <div className="mt-10 p-5 rounded-[20px] bg-white border border-[#e8e8ed] text-center shadow-sm">
+        <div className="mt-10 p-5 rounded-2xl bg-white border border-[#e8e8ed] text-center">
           <p className="text-[13px] text-[#86868b] mb-1.5 leading-[1.4]">
             Limit se počítá na IP adresu. Rozpad nápadu je jen 1× denně — je to nejdražší nástroj.
           </p>

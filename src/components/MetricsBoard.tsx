@@ -36,21 +36,13 @@ activeRobots.forEach((r) => {
 robotImages['Tým'] = robotImages['Pepa'] || '';
 
 const TOOL_NAMES: Record<string, string> = {
-  'pepa-rewrite': 'Pepa',
-  'marie-check': 'Marie',
-  'anicka-reply': 'Anička',
-  'franta-improve': 'Franta',
-  'emil-summarize': 'Emil',
-  'team-breakdown': 'Tým',
+  'pepa-rewrite': 'Pepa', 'marie-check': 'Marie', 'anicka-reply': 'Anička',
+  'franta-improve': 'Franta', 'emil-summarize': 'Emil', 'team-breakdown': 'Tým',
 };
 
 const TOOL_EMOJIS: Record<string, string> = {
-  'pepa-rewrite': '✍️',
-  'marie-check': '📋',
-  'anicka-reply': '❤️',
-  'franta-improve': '💰',
-  'emil-summarize': '📊',
-  'team-breakdown': '🧠',
+  'pepa-rewrite': '✍️', 'marie-check': '📋', 'anicka-reply': '❤️',
+  'franta-improve': '💰', 'emil-summarize': '📊', 'team-breakdown': '🧠',
 };
 
 function RobotAvatar({ name, size = 24 }: { name: string; size?: number }) {
@@ -91,7 +83,7 @@ export default function MetricsBoard() {
           <div className="h-4 bg-[#f5f5f7] rounded w-32 mb-8" />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="h-24 bg-[#f5f5f7] rounded-[16px]" />
+              <div key={i} className="h-24 bg-[#f5f5f7] rounded-2xl" />
             ))}
           </div>
         </div>
@@ -123,7 +115,6 @@ export default function MetricsBoard() {
   return (
     <section className="py-16 px-4">
       <div className="max-w-[680px] mx-auto">
-        {/* Header */}
         <div className="flex items-center gap-2 mb-1">
           <span className="w-[6px] h-[6px] rounded-full bg-[#007aff]" />
           <span className="text-[11px] font-semibold text-[#c7c7cc] uppercase tracking-[0.08em]">
@@ -137,32 +128,32 @@ export default function MetricsBoard() {
           Reálná data z {data.total} interakcí.
         </p>
 
-        {/* KPI karty */}
+        {/* KPI — čistý karty */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-          <div className="p-4 rounded-[16px] bg-white border border-[#e8e8ed] shadow-sm">
+          <div className="p-4 rounded-2xl bg-white border border-[#e8e8ed]">
             <p className="text-[11px] font-medium text-[#c7c7cc] uppercase tracking-[0.05em] mb-1">Úspěšnost</p>
-            <p className="text-[22px] font-bold text-[#1d1d1f] tracking-[-0.01em]">{data.successRate}%</p>
+            <p className="text-[22px] font-bold text-[#1d1d1f]">{data.successRate}%</p>
             <p className="text-[12px] text-[#86868b]">{data.successful}/{data.total}</p>
           </div>
-          <div className="p-4 rounded-[16px] bg-white border border-[#e8e8ed] shadow-sm">
+          <div className="p-4 rounded-2xl bg-white border border-[#e8e8ed]">
             <p className="text-[11px] font-medium text-[#c7c7cc] uppercase tracking-[0.05em] mb-1">Prům. čas</p>
-            <p className="text-[22px] font-bold text-[#1d1d1f] tracking-[-0.01em]">{data.avgDuration}s</p>
+            <p className="text-[22px] font-bold text-[#1d1d1f]">{data.avgDuration}s</p>
             <p className="text-[12px] text-[#86868b]">na interakci</p>
           </div>
-          <div className="p-4 rounded-[16px] bg-white border border-[#e8e8ed] shadow-sm">
+          <div className="p-4 rounded-2xl bg-white border border-[#e8e8ed]">
             <p className="text-[11px] font-medium text-[#c7c7cc] uppercase tracking-[0.05em] mb-1">Prům. délka</p>
-            <p className="text-[22px] font-bold text-[#1d1d1f] tracking-[-0.01em]">{data.avgOutputLength}</p>
+            <p className="text-[22px] font-bold text-[#1d1d1f]">{data.avgOutputLength}</p>
             <p className="text-[12px] text-[#86868b]">znaků na výstup</p>
           </div>
-          <div className="p-4 rounded-[16px] bg-white border border-[#e8e8ed] shadow-sm">
+          <div className="p-4 rounded-2xl bg-white border border-[#e8e8ed]">
             <p className="text-[11px] font-medium text-[#c7c7cc] uppercase tracking-[0.05em] mb-1">Celkem textu</p>
-            <p className="text-[22px] font-bold text-[#1d1d1f] tracking-[-0.01em]">{(data.totalChars / 1000).toFixed(1)}k</p>
+            <p className="text-[22px] font-bold text-[#1d1d1f]">{(data.totalChars / 1000).toFixed(1)}k</p>
             <p className="text-[12px] text-[#86868b]">znaků vygenerováno</p>
           </div>
         </div>
 
         {/* Tabulka */}
-        <div className="rounded-[16px] bg-white border border-[#e8e8ed] overflow-hidden shadow-sm">
+        <div className="rounded-2xl bg-white border border-[#e8e8ed] overflow-hidden">
           <div className="px-5 py-3.5 border-b border-[#e8e8ed]">
             <h3 className="text-[15px] font-semibold text-[#1d1d1f]">Podle nástroje</h3>
           </div>
@@ -201,7 +192,6 @@ export default function MetricsBoard() {
           </div>
         </div>
 
-        {/* Footer */}
         <p className="mt-3 text-[11px] text-[#c7c7cc] text-center">
           {data.total} interakcí • {data.totalDuration.toFixed(0)}s celkem
         </p>
