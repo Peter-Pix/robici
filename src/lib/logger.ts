@@ -60,7 +60,7 @@ async function flushToBlob(lines: string): Promise<void> {
       addRandomSuffix: false,
     });
   } catch (e) {
-    console.error('[Logger] Blob write failed:', e);
+    // Silent fail — Blob storage nemusí být inicializovaný
   }
 }
 

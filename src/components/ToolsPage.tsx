@@ -164,6 +164,8 @@ function ToolCard({ config, isOpen, onToggle }: { config: ToolConfig; isOpen: bo
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Něco se rozbilo');
+      console.log('[Robíci] API response:', { tool: config.id, hasOutput: !!data.output, outputLen: data.output?.length });
+      if (!data.output) throw new Error('Prázdná odpověď od Robíka');
       setResult(data);
       setTimeout(() => outputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
     } catch (e: any) {
