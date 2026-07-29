@@ -2,6 +2,7 @@ import Hero from '@/components/Hero';
 import RobotsPage from '@/components/RobotsPage';
 import ShiftBoard from '@/components/ShiftBoard';
 import ToolsPage from '@/components/ToolsPage';
+import MetricsBoard from '@/components/MetricsBoard';
 
 export default function Home() {
   return (
@@ -24,6 +25,14 @@ export default function Home() {
 
       {/* Nástroje */}
       <ToolsPage />
+
+      {/* Divider */}
+      <div className="max-w-3xl mx-auto px-4">
+        <hr className="border-gray-200" />
+      </div>
+
+      {/* Metriky */}
+      <MetricsBoard />
 
       {/* Divider */}
       <div className="max-w-3xl mx-auto px-4">

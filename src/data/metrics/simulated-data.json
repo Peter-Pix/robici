@@ -1,0 +1,22 @@
+{
+  "generated": "2026-07-29T00:00:00Z",
+  "total": 14,
+  "successful": 12,
+  "failed": 2,
+  "interactions": [
+    {"tool": "pepa-rewrite", "robik": "Pepa", "emoji": "✍️", "duration": 12.8, "chars": 1027, "input_len": 72, "mode": "default", "status": "ok"},
+    {"tool": "pepa-rewrite", "robik": "Pepa", "emoji": "✍️", "duration": 8.3, "chars": 1189, "input_len": 33, "mode": "default", "status": "ok"},
+    {"tool": "pepa-rewrite", "robik": "Pepa", "emoji": "✍️", "duration": 0, "chars": 0, "input_len": 50, "mode": "default", "status": "error_500"},
+    {"tool": "marie-check", "robik": "Marie", "emoji": "📋", "duration": 4.8, "chars": 582, "input_len": 100, "mode": "default", "status": "ok"},
+    {"tool": "marie-check", "robik": "Marie", "emoji": "📋", "duration": 2.5, "chars": 281, "input_len": 65, "mode": "default", "status": "ok"},
+    {"tool": "anicka-reply", "robik": "Anička", "emoji": "❤️", "duration": 5.7, "chars": 454, "input_len": 42, "mode": "mile", "status": "ok"},
+    {"tool": "anicka-reply", "robik": "Anička", "emoji": "❤️", "duration": 4.3, "chars": 147, "input_len": 35, "mode": "podekovat", "status": "ok"},
+    {"tool": "anicka-reply", "robik": "Anička", "emoji": "❤️", "duration": 3.4, "chars": 231, "input_len": 42, "mode": "profesionalne", "status": "ok"},
+    {"tool": "franta-improve", "robik": "Franta", "emoji": "💰", "duration": 17.9, "chars": 681, "input_len": 50, "mode": "presvedcivejsi", "status": "ok"},
+    {"tool": "franta-improve", "robik": "Franta", "emoji": "💰", "duration": 20.9, "chars": 936, "input_len": 42, "mode": "predmety", "status": "ok"},
+    {"tool": "emil-summarize", "robik": "Emil", "emoji": "📊", "duration": 2.2, "chars": 318, "input_len": 200, "mode": "default", "status": "ok"},
+    {"tool": "emil-summarize", "robik": "Emil", "emoji": "📊", "duration": 2.6, "chars": 419, "input_len": 150, "mode": "default", "status": "ok"},
+    {"tool": "team-breakdown", "robik": "Tým", "emoji": "🧠", "duration": 28.7, "chars": 5109, "input_len": 30, "mode": "default", "status": "ok"},
+    {"tool": "team-breakdown", "robik": "Tým", "emoji": "🧠", "duration": 0, "chars": 0, "input_len": 60, "mode": "default", "status": "error_500"}
+  ]
+}
