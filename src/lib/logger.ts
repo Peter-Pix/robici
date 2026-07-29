@@ -1,11 +1,14 @@
-// Logger — ukládá reálná data o použití nástrojů
-// Ukládá do JSON souboru v .usage-logs/ (mimo git)
+// Logger — perzistentní ukládání logů přes Vercel Blob
+// Lokálně: ukládá do .usage-logs/usage-log.ndjson
+// Na Vercel: ukládá do Vercel Blob
 
 import fs from 'fs';
 import path from 'path';
 
 const LOG_DIR = path.join(process.cwd(), '.usage-logs');
 const LOG_FILE = path.join(LOG_DIR, 'usage-log.ndjson');
+const BLOB_PREFIX = 'usage-logs';
+const IS_VERCEL = !!process.env.VERCEL;
 
 export interface UsageEntry {
   timestamp: string;
@@ -23,7 +26,7 @@ export interface UsageEntry {
   userAgent?: string;
 }
 
-// In-memory buffer pro rychlý zápis
+// In-memory buffer
 let buffer: UsageEntry[] = [];
 let writeTimer: NodeJS.Timeout | null = null;
 
@@ -33,24 +36,62 @@ function ensureLogDir() {
   }
 }
 
-function flushBuffer() {
-  if (buffer.length === 0) return;
+async function flushToBlob(lines: string): Promise<void> {
+  try {
+    const { put } = await import('@vercel/blob');
+    // Append mode: načti existující, přidej nový, ulož
+    const blobName = `${BLOB_PREFIX}/usage-log.ndjson`;
+    
+    let existing = '';
+    try {
+      const existingBlob = await fetch(
+        `https://blob.vercel-storage.com/${blobName}`
+      );
+      if (existingBlob.ok) {
+        existing = await existingBlob.text();
+      }
+    } catch {}
+
+    const content = existing + lines;
+    
+    await put(blobName, content, {
+      access: 'public',
+      contentType: 'application/x-ndjson',
+      addRandomSuffix: false,
+    });
+  } catch (e) {
+    console.error('[Logger] Blob write failed:', e);
+  }
+}
+
+function flushToFile(lines: string) {
   ensureLogDir();
-  const lines = buffer.map((entry) => JSON.stringify(entry)).join('\n') + '\n';
   try {
     fs.appendFileSync(LOG_FILE, lines, 'utf-8');
   } catch (e) {
-    console.error('[Logger] Failed to write:', e);
+    console.error('[Logger] File write failed:', e);
   }
+}
+
+async function flushBuffer() {
+  if (buffer.length === 0) return;
+  const lines = buffer.map((entry) => JSON.stringify(entry)).join('\n') + '\n';
+  const copy = [...buffer];
   buffer = [];
+
+  if (IS_VERCEL) {
+    await flushToBlob(lines);
+  } else {
+    flushToFile(lines);
+  }
 }
 
 export function logUsage(entry: UsageEntry) {
   buffer.push(entry);
 
-  // Flush každých 5s nebo při 20 záznamech
   if (buffer.length >= 20) {
     if (writeTimer) clearTimeout(writeTimer);
+    writeTimer = null;
     flushBuffer();
   } else if (!writeTimer) {
     writeTimer = setTimeout(() => {
@@ -60,7 +101,7 @@ export function logUsage(entry: UsageEntry) {
   }
 }
 
-// Flush při ukončení procesu
+// Flush při ukončení
 process.on('beforeExit', () => {
   if (writeTimer) clearTimeout(writeTimer);
   flushBuffer();
@@ -89,13 +130,32 @@ export interface AggregatedMetrics {
   recentEntries: UsageEntry[];
 }
 
-export function getAggregatedMetrics(days = 7): AggregatedMetrics {
-  ensureLogDir();
-  if (!fs.existsSync(LOG_FILE)) {
-    return createEmptyMetrics();
-  }
+async function readLogsFromBlob(): Promise<string> {
+  try {
+    const { head } = await import('@vercel/blob');
+    const blobName = `${BLOB_PREFIX}/usage-log.ndjson`;
+    
+    const blobs = await head(blobName);
+    if (!blobs) return '';
 
-  const raw = fs.readFileSync(LOG_FILE, 'utf-8');
+    const res = await fetch(blobs.url);
+    if (!res.ok) return '';
+    return await res.text();
+  } catch {
+    return '';
+  }
+}
+
+function readLogsFromFile(): string {
+  ensureLogDir();
+  if (!fs.existsSync(LOG_FILE)) return '';
+  return fs.readFileSync(LOG_FILE, 'utf-8');
+}
+
+export async function getAggregatedMetrics(days = 7): Promise<AggregatedMetrics> {
+  const raw = IS_VERCEL ? await readLogsFromBlob() : readLogsFromFile();
+  if (!raw) return createEmptyMetrics();
+
   const lines = raw.trim().split('\n').filter(Boolean);
   const entries: UsageEntry[] = lines.map((l) => JSON.parse(l));
 
@@ -110,7 +170,6 @@ export function getAggregatedMetrics(days = 7): AggregatedMetrics {
   const byDay: Record<string, number> = {};
 
   for (const entry of recent) {
-    // By tool
     if (!byTool[entry.tool]) {
       byTool[entry.tool] = { count: 0, success: 0, fail: 0, avgDuration: 0, avgChars: 0 };
     }
@@ -124,12 +183,10 @@ export function getAggregatedMetrics(days = 7): AggregatedMetrics {
       t.fail++;
     }
 
-    // By day
     const day = entry.timestamp.split('T')[0];
     byDay[day] = (byDay[day] || 0) + 1;
   }
 
-  // Averages
   for (const key of Object.keys(byTool)) {
     const t = byTool[key];
     if (t.success > 0) {
