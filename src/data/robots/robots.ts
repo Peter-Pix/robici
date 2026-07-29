@@ -195,7 +195,7 @@ export const robots: Robot[] = [
       'Mám graf.',
       'Trend je pozitivní. (Asi.)',
     ],
-    status: 'inactive',
+    status: 'active',
     mood: 6,
   },
   {
