@@ -86,19 +86,26 @@ async function flushBuffer() {
   }
 }
 
-export function logUsage(entry: UsageEntry) {
+export async function logUsage(entry: UsageEntry) {
   buffer.push(entry);
 
   if (buffer.length >= 20) {
     if (writeTimer) clearTimeout(writeTimer);
     writeTimer = null;
-    flushBuffer();
+    await flushBuffer();
   } else if (!writeTimer) {
     writeTimer = setTimeout(() => {
       writeTimer = null;
       flushBuffer();
     }, 5000);
   }
+}
+
+// Explicitní flush — použij v API routách před odpovědí, serverless nezavolá beforeExit
+export async function flushLogs(): Promise<void> {
+  if (writeTimer) clearTimeout(writeTimer);
+  writeTimer = null;
+  await flushBuffer();
 }
 
 // Flush při ukončení

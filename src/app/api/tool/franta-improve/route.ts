@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ollamaCall, checkIpLimit } from '@/lib/ollama';
 import { getIp, logToolUsage } from '@/lib/tool-logger';
+import { flushLogs } from '@/lib/logger';
 
 export const maxDuration = 60;
 export const dynamic = 'force-dynamic';
@@ -59,6 +60,8 @@ export async function POST(request: NextRequest) {
       mode,
     });
 
+    await flushLogs();
+
     return NextResponse.json({
       robik: 'Franta',
       emoji: '💰',
@@ -73,6 +76,9 @@ export async function POST(request: NextRequest) {
       inputLength: 0,
       errorMessage: error.message,
     });
+
+    await flushLogs();
+
     return NextResponse.json({ error: `Něco se rozbilo: ${error.message}` }, { status: 500 });
   }
 }

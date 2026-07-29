@@ -4,6 +4,8 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { ollamaCall, callWithRevision } from '@/lib/ollama';
+import { getIp, logToolUsage } from '@/lib/tool-logger';
+import { flushLogs } from '@/lib/logger';
 
 export const maxDuration = 300;
 export const dynamic = 'force-dynamic';
@@ -112,12 +114,27 @@ Text: "${revision.final}"`
 
     const totalDuration = revision.totalDuration + frantaFinal.duration;
 
+    logToolUsage(request, 'mail-rewrite', 'ok', {
+      inputLength: userInput.length,
+      outputLength: frantaFinal.content.length,
+      duration: totalDuration,
+    });
+
+    await flushLogs();
+
     return NextResponse.json({
       input: userInput,
       steps,
       totalDuration,
     });
   } catch (error: any) {
+    logToolUsage(request, 'mail-rewrite', 'error', {
+      inputLength: 0,
+      errorMessage: error.message,
+    });
+
+    await flushLogs();
+
     return NextResponse.json(
       { error: `Něco se rozbilo: ${error.message}` },
       { status: 500 }
