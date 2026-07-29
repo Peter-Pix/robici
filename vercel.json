@@ -1,9 +1,9 @@
 {
   "functions": {
-    "api/tool/*.ts": {
+    "src/app/api/tool/**/*.ts": {
       "maxDuration": 60
     },
-    "api/scene/*.ts": {
+    "src/app/api/scene/**/*.ts": {
       "maxDuration": 60
     }
   }
