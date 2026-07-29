@@ -4,6 +4,30 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { activeRobots } from '@/data/robots/robots';
 
+interface ToolMetrics {
+  count: number;
+  success: number;
+  fail: number;
+  avgDuration: number;
+  avgChars: number;
+}
+
+interface MetricsData {
+  total: number;
+  successful: number;
+  failed: number;
+  limited: number;
+  successRate: number;
+  avgDuration: number;
+  avgInputLength: number;
+  avgOutputLength: number;
+  totalDuration: number;
+  totalChars: number;
+  byTool: Record<string, ToolMetrics>;
+  byDay: Record<string, number>;
+  recentEntries: any[];
+}
+
 const robotImages: Record<string, string> = {};
 activeRobots.forEach((r) => {
   const name = r.name.split(' ')[0];
@@ -11,35 +35,42 @@ activeRobots.forEach((r) => {
 });
 robotImages['Tým'] = robotImages['Pepa'] || '';
 
-interface ToolMetrics {
-  count: number;
-  avgDuration: number;
-  avgChars: number;
-  success: number;
-  fail: number;
-}
-
-interface MetricsData {
-  generated: string;
-  total: number;
-  successful: number;
-  failed: number;
-  successRate: number;
-  avgDuration: number;
-  avgChars: number;
-  totalDuration: number;
-  totalChars: number;
-  byTool: Record<string, ToolMetrics>;
-}
-
 const TOOL_NAMES: Record<string, string> = {
-  'pepa-rewrite': '✍️ Pepa',
-  'marie-check': '📋 Marie',
-  'anicka-reply': '❤️ Anička',
-  'franta-improve': '💰 Franta',
-  'emil-summarize': '📊 Emil',
-  'team-breakdown': '🧠 Tým',
+  'pepa-rewrite': 'Pepa',
+  'marie-check': 'Marie',
+  'anicka-reply': 'Anička',
+  'franta-improve': 'Franta',
+  'emil-summarize': 'Emil',
+  'team-breakdown': 'Tým',
 };
+
+const TOOL_EMOJIS: Record<string, string> = {
+  'pepa-rewrite': '✍️',
+  'marie-check': '📋',
+  'anicka-reply': '❤️',
+  'franta-improve': '💰',
+  'emil-summarize': '📊',
+  'team-breakdown': '🧠',
+};
+
+function RobotAvatar({ name, size = 24 }: { name: string; size?: number }) {
+  const img = robotImages[name];
+  if (!img) return null;
+  return (
+    <div
+      className="relative flex-shrink-0 overflow-hidden bg-[#f5f5f7]"
+      style={{ width: size, height: size, borderRadius: size / 2 }}
+    >
+      <Image
+        src={img}
+        alt={name}
+        width={size}
+        height={size}
+        className="w-full h-full object-contain p-0.5"
+      />
+    </div>
+  );
+}
 
 export default function MetricsBoard() {
   const [data, setData] = useState<MetricsData | null>(null);
@@ -56,11 +87,11 @@ export default function MetricsBoard() {
   if (loading) {
     return (
       <section className="py-16 px-4">
-        <div className="max-w-4xl mx-auto animate-pulse">
-          <div className="h-4 bg-gray-200 rounded w-48 mb-8" />
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="max-w-[680px] mx-auto animate-pulse">
+          <div className="h-4 bg-[#f5f5f7] rounded w-32 mb-8" />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="h-24 bg-gray-100 rounded-2xl" />
+              <div key={i} className="h-24 bg-[#f5f5f7] rounded-[16px]" />
             ))}
           </div>
         </div>
@@ -68,92 +99,101 @@ export default function MetricsBoard() {
     );
   }
 
-  if (!data) return null;
+  if (!data || data.total === 0) {
+    return (
+      <section className="py-16 px-4">
+        <div className="max-w-[680px] mx-auto text-center">
+          <div className="flex items-center gap-2 mb-1 justify-center">
+            <span className="w-[6px] h-[6px] rounded-full bg-[#007aff]" />
+            <span className="text-[11px] font-semibold text-[#c7c7cc] uppercase tracking-[0.08em]">
+              Statistiky
+            </span>
+          </div>
+          <h2 className="text-[28px] font-bold text-[#1d1d1f] tracking-[-0.02em] mb-1.5">
+            📊 Zatím žádná data
+          </h2>
+          <p className="text-[15px] text-[#86868b] leading-[1.4]">
+            Jakmile někdo použije některý z nástrojů, objeví se tady.
+          </p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-16 px-4">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-[680px] mx-auto">
         {/* Header */}
-        <div className="flex items-center gap-2 mb-2">
-          <span className="h-2.5 w-2.5 rounded-full bg-blue-500" />
-          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="w-[6px] h-[6px] rounded-full bg-[#007aff]" />
+          <span className="text-[11px] font-semibold text-[#c7c7cc] uppercase tracking-[0.08em]">
             Statistiky
           </span>
         </div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+        <h2 className="text-[28px] font-bold text-[#1d1d1f] tracking-[-0.02em] mb-1.5">
           📊 Co Robíci dělali
         </h2>
-        <p className="text-gray-500 mb-8">
-          Nasimulovaná data z {data.total} interakcí. Reálná data přijdou po spuštění.
+        <p className="text-[15px] text-[#86868b] mb-8 leading-[1.4]">
+          Reálná data z {data.total} interakcí.
         </p>
 
         {/* KPI karty */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <div className="p-4 rounded-2xl bg-white border border-gray-200">
-            <p className="text-xs text-gray-400 mb-1">Úspěšnost</p>
-            <p className="text-2xl font-bold text-gray-900">{data.successRate}%</p>
-            <p className="text-xs text-gray-400">{data.successful}/{data.total}</p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+          <div className="p-4 rounded-[16px] bg-white border border-[#e8e8ed] shadow-sm">
+            <p className="text-[11px] font-medium text-[#c7c7cc] uppercase tracking-[0.05em] mb-1">Úspěšnost</p>
+            <p className="text-[22px] font-bold text-[#1d1d1f] tracking-[-0.01em]">{data.successRate}%</p>
+            <p className="text-[12px] text-[#86868b]">{data.successful}/{data.total}</p>
           </div>
-          <div className="p-4 rounded-2xl bg-white border border-gray-200">
-            <p className="text-xs text-gray-400 mb-1">Prům. čas</p>
-            <p className="text-2xl font-bold text-gray-900">{data.avgDuration}s</p>
-            <p className="text-xs text-gray-400">na interakci</p>
+          <div className="p-4 rounded-[16px] bg-white border border-[#e8e8ed] shadow-sm">
+            <p className="text-[11px] font-medium text-[#c7c7cc] uppercase tracking-[0.05em] mb-1">Prům. čas</p>
+            <p className="text-[22px] font-bold text-[#1d1d1f] tracking-[-0.01em]">{data.avgDuration}s</p>
+            <p className="text-[12px] text-[#86868b]">na interakci</p>
           </div>
-          <div className="p-4 rounded-2xl bg-white border border-gray-200">
-            <p className="text-xs text-gray-400 mb-1">Prům. délka</p>
-            <p className="text-2xl font-bold text-gray-900">{data.avgChars}</p>
-            <p className="text-xs text-gray-400">znaků na výstup</p>
+          <div className="p-4 rounded-[16px] bg-white border border-[#e8e8ed] shadow-sm">
+            <p className="text-[11px] font-medium text-[#c7c7cc] uppercase tracking-[0.05em] mb-1">Prům. délka</p>
+            <p className="text-[22px] font-bold text-[#1d1d1f] tracking-[-0.01em]">{data.avgOutputLength}</p>
+            <p className="text-[12px] text-[#86868b]">znaků na výstup</p>
           </div>
-          <div className="p-4 rounded-2xl bg-white border border-gray-200">
-            <p className="text-xs text-gray-400 mb-1">Celkem textu</p>
-            <p className="text-2xl font-bold text-gray-900">{(data.totalChars / 1000).toFixed(1)}k</p>
-            <p className="text-xs text-gray-400">znaků vygenerováno</p>
+          <div className="p-4 rounded-[16px] bg-white border border-[#e8e8ed] shadow-sm">
+            <p className="text-[11px] font-medium text-[#c7c7cc] uppercase tracking-[0.05em] mb-1">Celkem textu</p>
+            <p className="text-[22px] font-bold text-[#1d1d1f] tracking-[-0.01em]">{(data.totalChars / 1000).toFixed(1)}k</p>
+            <p className="text-[12px] text-[#86868b]">znaků vygenerováno</p>
           </div>
         </div>
 
-        {/* Tabulka podle nástrojů */}
-        <div className="rounded-2xl border border-gray-200 bg-white overflow-hidden">
-          <div className="p-4 border-b border-gray-100">
-            <h3 className="font-semibold text-gray-900">Podle nástroje</h3>
+        {/* Tabulka */}
+        <div className="rounded-[16px] bg-white border border-[#e8e8ed] overflow-hidden shadow-sm">
+          <div className="px-5 py-3.5 border-b border-[#e8e8ed]">
+            <h3 className="text-[15px] font-semibold text-[#1d1d1f]">Podle nástroje</h3>
           </div>
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-[13px]">
               <thead>
-                <tr className="border-b border-gray-100">
-                  <th className="text-left p-4 text-gray-400 font-medium">Nástroj</th>
-                  <th className="text-right p-4 text-gray-400 font-medium">Použití</th>
-                  <th className="text-right p-4 text-gray-400 font-medium">⏱ Průměr</th>
-                  <th className="text-right p-4 text-gray-400 font-medium">📝 Znaků</th>
-                  <th className="text-right p-4 text-gray-400 font-medium">✅ Úspěch</th>
-                  <th className="text-right p-4 text-gray-400 font-medium">❌ Chyby</th>
+                <tr className="border-b border-[#e8e8ed]">
+                  <th className="text-left px-5 py-3 text-[11px] font-medium text-[#c7c7cc] uppercase tracking-[0.05em]">Nástroj</th>
+                  <th className="text-right px-5 py-3 text-[11px] font-medium text-[#c7c7cc] uppercase tracking-[0.05em]">Použití</th>
+                  <th className="text-right px-5 py-3 text-[11px] font-medium text-[#c7c7cc] uppercase tracking-[0.05em]">⏱ Čas</th>
+                  <th className="text-right px-5 py-3 text-[11px] font-medium text-[#c7c7cc] uppercase tracking-[0.05em]">📝 Znaků</th>
+                  <th className="text-right px-5 py-3 text-[11px] font-medium text-[#c7c7cc] uppercase tracking-[0.05em]">✅</th>
+                  <th className="text-right px-5 py-3 text-[11px] font-medium text-[#c7c7cc] uppercase tracking-[0.05em]">❌</th>
                 </tr>
               </thead>
               <tbody>
-                {Object.entries(data.byTool).map(([tool, metrics]) => (
-                  <tr key={tool} className="border-b border-gray-50 hover:bg-gray-50">
-                    <td className="p-4">
-                      <div className="flex items-center gap-2">
-                        <div className="relative w-7 h-7 flex-shrink-0">
-                          {robotImages[TOOL_NAMES[tool]?.split(' ')[1] || ''] && (
-                            <Image
-                              src={robotImages[TOOL_NAMES[tool]?.split(' ')[1] || '']}
-                              alt={tool}
-                              width={28}
-                              height={28}
-                              className="w-full h-full object-contain"
-                            />
-                          )}
-                        </div>
-                        <span className="font-medium text-gray-900">
-                          {TOOL_NAMES[tool] || tool}
+                {Object.entries(data.byTool).map(([tool, m]) => (
+                  <tr key={tool} className="border-b border-[#e8e8ed] last:border-b-0 hover:bg-[#f5f5f7] transition-colors">
+                    <td className="px-5 py-3">
+                      <div className="flex items-center gap-2.5">
+                        <RobotAvatar name={TOOL_NAMES[tool] || tool} size={22} />
+                        <span className="font-medium text-[#1d1d1f]">
+                          {TOOL_EMOJIS[tool] || ''} {TOOL_NAMES[tool] || tool}
                         </span>
                       </div>
                     </td>
-                    <td className="p-4 text-right text-gray-700">{metrics.count}×</td>
-                    <td className="p-4 text-right text-gray-700">{metrics.avgDuration}s</td>
-                    <td className="p-4 text-right text-gray-700">{metrics.avgChars}</td>
-                    <td className="p-4 text-right text-green-600">{metrics.success}</td>
-                    <td className="p-4 text-right text-red-400">{metrics.fail}</td>
+                    <td className="px-5 py-3 text-right text-[#1d1d1f] font-medium">{m.count}×</td>
+                    <td className="px-5 py-3 text-right text-[#86868b]">{m.avgDuration}s</td>
+                    <td className="px-5 py-3 text-right text-[#86868b]">{m.avgChars}</td>
+                    <td className="px-5 py-3 text-right text-[#30d158] font-medium">{m.success}</td>
+                    <td className="px-5 py-3 text-right text-[#ff453a]">{m.fail}</td>
                   </tr>
                 ))}
               </tbody>
@@ -162,8 +202,7 @@ export default function MetricsBoard() {
         </div>
 
         {/* Footer */}
-        <p className="mt-4 text-xs text-gray-400 text-center">
-          Data z {new Date(data.generated).toLocaleDateString('cs-CZ')} •{' '}
+        <p className="mt-3 text-[11px] text-[#c7c7cc] text-center">
           {data.total} interakcí • {data.totalDuration.toFixed(0)}s celkem
         </p>
       </div>
