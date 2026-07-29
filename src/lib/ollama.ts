@@ -66,11 +66,24 @@ export async function ollamaCall(
 // Pro produkci použít Redis
 const ipLimits = new Map<string, { date: string; counts: Record<string, number> }>();
 
+// Výjimka pro localhost a benchmark — žádný limit
+const UNLIMITED_IPS = new Set([
+  '127.0.0.1',
+  '::1',
+  '::ffff:127.0.0.1',
+  'localhost',
+]);
+
 export function checkIpLimit(
   ip: string,
   tool: string,
   maxPerDay = 3
 ): { allowed: boolean; remaining: number } {
+  // Localhost a benchmark mají neomezený limit
+  if (UNLIMITED_IPS.has(ip)) {
+    return { allowed: true, remaining: 999 };
+  }
+
   const today = new Date().toISOString().split('T')[0];
   const record = ipLimits.get(ip);
 
@@ -86,4 +99,9 @@ export function checkIpLimit(
 
   record.counts[tool] = current + 1;
   return { allowed: true, remaining: maxPerDay - current - 1 };
+}
+
+// Reset IP limit (pro testování)
+export function resetIpLimits(): void {
+  ipLimits.clear();
 }
