@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 const characters = [
   { id: 'rodina', name: 'Celá rodina', emoji: '👨‍👩‍👧‍👦' },
@@ -17,14 +17,15 @@ const characters = [
 
 export default function GenerateColoring() {
   const [selected, setSelected] = useState('rodina');
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [svgContent, setSvgContent] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const svgRef = useRef<HTMLDivElement>(null);
 
   const generate = async () => {
     setLoading(true);
     setError(null);
-    setImageUrl(null);
+    setSvgContent(null);
 
     try {
       const res = await fetch('/api/generate-image', {
@@ -37,16 +38,27 @@ export default function GenerateColoring() {
 
       if (data.error) {
         setError(data.error);
-      } else if (data.image) {
-        setImageUrl(data.image);
+      } else if (data.svg) {
+        setSvgContent(data.svg);
       } else {
-        setError('Nepodařilo se vygenerovat obrázek.');
+        setError('Nepodařilo se vygenerovat omalovánku.');
       }
     } catch (err: any) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
+  };
+
+  const downloadSVG = () => {
+    if (!svgContent) return;
+    const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `omalovanka-${selected}.svg`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -84,17 +96,20 @@ export default function GenerateColoring() {
         </div>
       )}
 
-      {/* Obrázek */}
-      {imageUrl && (
+      {/* SVG náhled */}
+      {svgContent && (
         <div className="text-center">
-          <img src={imageUrl} alt="Vygenerovaná omalovánka" className="max-w-full rounded-xl mx-auto mb-3" />
-          <a
-            href={imageUrl}
-            download={`omalovanka-${selected}.png`}
+          <div
+            ref={svgRef}
+            className="bg-white rounded-xl p-4 mb-3 border border-gray-200 max-w-full overflow-auto"
+            dangerouslySetInnerHTML={{ __html: svgContent }}
+          />
+          <button
+            onClick={downloadSVG}
             className="inline-block bg-white text-robik-text border-2 border-pastel-blue px-4 py-2 rounded-xl text-sm hover:bg-pastel-blue/10 transition-all"
           >
-            📥 Stáhnout
-          </a>
+            📥 Stáhnout SVG
+          </button>
         </div>
       )}
     </div>

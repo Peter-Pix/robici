@@ -1,4 +1,4 @@
-// /api/generate-image — Generování omalovánek přes OpenRouter
+// /api/generate-image — Generování SVG omalovánek přes OpenRouter (text-to-SVG)
 import { NextRequest, NextResponse } from 'next/server';
 
 export const maxDuration = 60;
@@ -6,33 +6,60 @@ export const dynamic = 'force-dynamic';
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_IMAGE_API_KEY || process.env.OPENROUTER_API_KEY;
 
-// Master prompt pro konzistentní styl Robíků
-const MASTER_STYLE = `High-end 3D robot character render, "Toy-Bot" aesthetic, smooth matte white plastic and brushed aluminum parts, friendly digital LED eyes, soft pastel color accents, studio lighting, centered composition, white background, 8k, Pixar-style.`;
-
-const coloringPrompts: Record<string, string> = {
-  'rodina': `Celá rodina Robíků na jedné stránce. ${MASTER_STYLE} Všichni Robíci stojí vedle sebe: Pepa (mladý robot s anténami místo vlasů, v modrém svetru), Marie (elegantní robot ve žlutém plášti), Gustav (starý robot s brýlemi a drátěnými vousy), Bětka (štíhlý robot s růžovou čepičkou), Mirek (robustní serverový robot), Franta (energický robot s kravatou), Anička (malý kulatý robot s mašlí), Emil (přesný robot s displejem na hrudi), Zdena (laskavý robot s čajem). Jožin (malý kovový kocour) leží u nohou. Černobílé, tlusté linky, omalovánka pro děti.`,
-  'pepa': `Pepa Robík, mladý robot copywriter. ${MASTER_STYLE} Má rozcuchané antény místo vlasů, oversized pastelově modrý pletený svetr, v ruce digitální tablet. Sedí u stolu plného papírů. Usmívá se, vypadá kreativně a trochu roztržitě. Černobílé, tlusté linky, omalovánka pro děti.`,
-  'betka': `Bětka Robíková, robot grafička. ${MASTER_STYLE} Štíhlá, s jemnými mechanickými rameny. Má na sobě malou pastelově růžovou čepičku malířky. V ruce drží digitální pero. Její povrch je posetý barevnými skvrnami od barvy. Dívá se soustředěně na kresbu. Černobílé, tlusté linky, omalovánka pro děti.`,
-  'gustav': `Gustav Robík, starý robot QA tester. ${MASTER_STYLE} Trochu zrezivělý v kloubech. Má obrovské staromódní brýle nasazené přes LED čočky. Vousy z drobných stříbrných drátků. V ruce drží starou analogovou lupu. Vypadá mrzutě, ale mile. Černobílé, tlusté linky, omalovánka pro děti.`,
-  'mirek': `Mirek Robík, táta robot technik. ${MASTER_STYLE} Robustní, hranatý robot. Vypadá jako server s nohama. Má v sobě integrované porty a svítící modré diody. Žádné oblečení, jen čistý matný bílý kov s modrými detaily. Vážný výraz. Černobílé, tlusté linky, omalovánka pro děti.`,
-  'marie': `Marie Robíková, máma robot vedoucí provozu. ${MASTER_STYLE} Elegantní, s proudnými liniemi. Má na sobě pastelově žlutý "administratorský" plášť. Oči jsou dvě perfektní modré LED čárky. V jedné ruce drží kávu, v druhé tablet. Profesionální výraz. Černobílé, tlusté linky, omalovánka pro děti.`,
-  'franta': `Franta Robík, strejda robot obchodník. ${MASTER_STYLE} Energický robot s vysunutými rameny pro gestikulaci. Má na sobě malý pastelový kravatový proužek. Oči jsou dvě velké nadšené tečky. Vypadá, jako by právě něco prodával. Černobílé, tlusté linky, omalovánka pro děti.`,
-  'anicka': `Anička Robíková, dcera robot. ${MASTER_STYLE} Malý, kulatý robot. Vypadá jako milý pomocník. Má na sobě pastelovou mašli. Oči jsou dvě velké laskavé srdíčka. Usmívá se. Černobílé, tlusté linky, omalovánka pro děti.`,
-  'emil': `Emil Robík, bratranec robot analytik. ${MASTER_STYLE} Přesný robot s vestavěným malým displejem na hrudníku, kde neustále běží grafy. Má čtverečkové brýle a velmi rigidní postoj. Pastelově fialový akcent. Vážný výraz. Černobílé, tlusté linky, omalovánka pro děti.`,
-  'jozin': `Jožin, firemní kocour robot. ${MASTER_STYLE} Malý kovový robot-kotníček. Má dlouhý kabel místo ocasu a dvě svítící žluté čočky. V podstatě malá kovová krabička s uškami. Leží na boku a spí. Černobílé, tlusté linky, omalovánka pro děti.`,
+const svgPrompts: Record<string, string> = {
+  'rodina': `Vytvoř SVG omalovánku pro děti. Černobílé, tlusté čáry, jednoduché tvary. 
+Zobraz celou rodinu robotů stojících vedle sebe:
+- Pepa: mladý robot s anténkami místo vlasů, v oversized svetru
+- Marie: elegantní robot ve žlutém plášti
+- Gustav: starý robot s brýlemi a drátěnými vousy
+- Bětka: štíhlý robot s malířskou čepičkou
+- Mirek: robustní hranatý robot
+- Franta: energický robot s kravatou
+- Anička: malý kulatý robot s mašlí
+- Emil: robot s displejem na hrudi
+- Zdena: laskavý robot
+Jožin (malý kovový kocour) leží u nohou.
+Všechny postavy jsou jednoduché, roztomilé, vhodné pro vybarvování dětmi od 4 let.
+Vrať pouze SVG kód, žádný text před ani po.`,
+  'pepa': `Vytvoř SVG omalovánku pro děti. Černobílé, tlusté čáry, jednoduché tvary.
+Zobraz Pepu Robíka - mladého robota copywritera. Má rozcuchané antény místo vlasů, oversized svetr, v ruce tablet. Sedí u stolu. Usmívá se.
+Vrať pouze SVG kód, žádný text před ani po.`,
+  'betka': `Vytvoř SVG omalovánku pro děti. Černobílé, tlusté čáry, jednoduché tvary.
+Zobraz Bětku Robíkovou - robot grafičku. Štíhlá, s jemnými mechanickými rameny, malířská čepička na hlavě, v ruce digitální pero. Soustředěně kreslí.
+Vrať pouze SVG kód, žádný text před ani po.`,
+  'gustav': `Vytvoř SVG omalovánku pro děti. Černobílé, tlusté čáry, jednoduché tvary.
+Zobraz Gustava Robíka - starého robota QA testera. Má obrovské brýle, drátěné vousy, v ruce lupu. Vypadá mrzutě ale mile.
+Vrať pouze SVG kód, žádný text před ani po.`,
+  'mirek': `Vytvoř SVG omalovánku pro děti. Černobílé, tlusté čáry, jednoduché tvary.
+Zobraz Mirka Robíka - robustního hranatého robota technika. Vypadá jako server s nohama, má svítící diody. Vážný výraz.
+Vrať pouze SVG kód, žádný text před ani po.`,
+  'marie': `Vytvoř SVG omalovánku pro děti. Černobílé, tlusté čáry, jednoduché tvary.
+Zobraz Marii Robíkovou - elegantní robot vedoucí provozu. Má profesionální plášť, v jedné ruce kávu, v druhé tablet. Přísný ale milý výraz.
+Vrať pouze SVG kód, žádný text před ani po.`,
+  'franta': `Vytvoř SVG omalovánku pro děti. Černobílé, tlusté čáry, jednoduché tvary.
+Zobraz Frantu Robíka - energického robota obchodníka. Má kravatu, gestikuluje rukama, nadšený výraz.
+Vrať pouze SVG kód, žádný text před ani po.`,
+  'anicka': `Vytvoř SVG omalovánku pro děti. Černobílé, tlusté čáry, jednoduché tvary.
+Zobraz Aničku Robíkovou - malého kulatého robota. Má mašli, oči ve tvaru srdíček, usmívá se. Vypadá mile a přátelsky.
+Vrať pouze SVG kód, žádný text před ani po.`,
+  'emil': `Vytvoř SVG omalovánku pro děti. Černobílé, tlusté čáry, jednoduché tvary.
+Zobraz Emila Robíka - robota analytika. Má čtverečkové brýle, displej na hrudi s grafy, rigidní postoj. Vážný výraz.
+Vrať pouze SVG kód, žádný text před ani po.`,
+  'jozin': `Vytvoř SVG omalovánku pro děti. Černobílé, tlusté čáry, jednoduché tvary.
+Zobraz Jožina - malého kovového robota kocoura. Má uška, kabel místo ocasu, svítící oči. Leží na boku a spí. Vypadá roztomile.
+Vrať pouze SVG kód, žádný text před ani po.`,
 };
 
 export async function POST(req: NextRequest) {
   const { character = 'rodina' } = await req.json();
 
-  const prompt = coloringPrompts[character] || coloringPrompts.rodina;
+  const prompt = svgPrompts[character] || svgPrompts.rodina;
 
   if (!OPENROUTER_API_KEY) {
     return NextResponse.json({ error: 'OpenRouter API key not configured' }, { status: 500 });
   }
 
   try {
-    // Zkusíme nejdřív DALL-E 3 (OpenRouter)
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -42,15 +69,14 @@ export async function POST(req: NextRequest) {
         'X-Title': 'Robíci - AI Omalovánky',
       },
       body: JSON.stringify({
-        model: 'openai/dall-e-3',
+        model: 'qwen/qwen3.7-flash',
         messages: [
           {
             role: 'user',
             content: prompt,
           },
         ],
-        n: 1,
-        size: '1024x1024',
+        max_tokens: 4000,
       }),
     });
 
@@ -60,7 +86,13 @@ export async function POST(req: NextRequest) {
     }
 
     const data = await response.json();
-    return NextResponse.json({ image: data.data?.[0]?.url || null });
+    const svgContent = data.choices?.[0]?.message?.content || '';
+
+    // Extract SVG from response (remove markdown code blocks if present)
+    const svgMatch = svgContent.match(/<svg[\s\S]*?<\/svg>/i);
+    const svg = svgMatch ? svgMatch[0] : svgContent;
+
+    return NextResponse.json({ svg, raw: svgContent });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
