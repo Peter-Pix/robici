@@ -1,14 +1,16 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import Nav from '@/components/Nav';
+import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Robíci — Digitální kancelář, kterou lidi chodí navštěvovat',
+  title: 'Robíci – rodina, která tě naučí kamarádit s AI',
   description:
-    'Robíci odstraní tu nejnudnější část psaní. A ještě u toho uvidíš, jak přemýšlí. Parta AI kolegů — Pepa píše, Marie kontroluje, Franta navrhuje, Mirek opravuje, Anička odpovídá.',
+    'Robíci jsou rodina AI kamarádů. Nauč se Robočtinu, stáhni si omalovánky a poznej celou naši rodinu. Nejsme nástroj. Jsme přátelé.',
   openGraph: {
-    title: 'Robíci — Digitální kancelář',
+    title: 'Robíci – rodina, která tě naučí kamarádit s AI',
     description:
-      'Robíci odstraní tu nejnudnější část psaní. A ještě u toho uvidíš, jak přemýšlí.',
+      'Robíci jsou rodina AI kamarádů. Nauč se Robočtinu, stáhni si omalovánky a poznej celou naši rodinu.',
     type: 'website',
     locale: 'cs_CZ',
   },
@@ -21,7 +23,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="cs">
-      <body className="antialiased">{children}</body>
+      <body className="antialiased min-h-screen flex flex-col">
+        <Nav />
+        <main className="flex-1">{children}</main>
+        <Footer />
+      </body>
     </html>
   );
 }
