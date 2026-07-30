@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export const maxDuration = 60;
 export const dynamic = 'force-dynamic';
 
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || process.env.OPENROUTER_IMAGE_API_KEY;
+const OPENROUTER_API_KEY = process.env.OPENROUTER_IMAGE_API_KEY || process.env.OPENROUTER_API_KEY;
 
 // Master prompt pro konzistentní styl Robíků
 const MASTER_STYLE = `High-end 3D robot character render, "Toy-Bot" aesthetic, smooth matte white plastic and brushed aluminum parts, friendly digital LED eyes, soft pastel color accents, studio lighting, centered composition, white background, 8k, Pixar-style.`;
@@ -27,12 +27,19 @@ export async function POST(req: NextRequest) {
 
   const prompt = coloringPrompts[character] || coloringPrompts.rodina;
 
+  if (!OPENROUTER_API_KEY) {
+    return NextResponse.json({ error: 'OpenRouter API key not configured' }, { status: 500 });
+  }
+
   try {
+    // Zkusíme nejdřív DALL-E 3 (OpenRouter)
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+        'HTTP-Referer': 'https://robici-sro.vercel.app',
+        'X-Title': 'Robíci - AI Omalovánky',
       },
       body: JSON.stringify({
         model: 'openai/dall-e-3',
