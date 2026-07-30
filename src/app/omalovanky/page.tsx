@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import GenerateColoring from '@/components/GenerateColoring';
 
 const freeColoring = [
   {
@@ -106,6 +107,17 @@ export default function OmalovankyPage() {
               </div>
             ))}
           </div>
+        </section>
+
+        {/* AI Generování */}
+        <section className="mb-16">
+          <h2 className="text-xl font-bold text-robik-dark text-center mb-2">
+            🤖 Vygeneruj si vlastní omalovánku
+          </h2>
+          <p className="text-sm text-robik-text/50 text-center mb-8">
+            Vyber Robíka a AI ti nakreslí omalovánku přesně podle něj.
+          </p>
+          <GenerateColoring />
         </section>
 
         {/* Premium */}
