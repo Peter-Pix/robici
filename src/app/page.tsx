@@ -59,16 +59,16 @@ const offerCards = [
 ];
 
 const familyMembers = [
-  { name: 'Gustav', role: 'Děda • QA Tester', emoji: '👴' },
-  { name: 'Zdena', role: 'Babička • Zákaznický servis', emoji: '👵' },
-  { name: 'Mirek', role: 'Táta • Technik', emoji: '👨' },
-  { name: 'Marie', role: 'Máma • Vedoucí provozu', emoji: '👩' },
-  { name: 'Pepa', role: 'Syn • Copywriter', emoji: '🧑' },
-  { name: 'Bětka', role: 'Teta • Grafička', emoji: '👩‍🎨' },
-  { name: 'Franta', role: 'Strejda • Obchodník', emoji: '🧔' },
-  { name: 'Anička', role: 'Dcera • Zákaznický servis', emoji: '👧' },
-  { name: 'Emil', role: 'Bratranec • Analytik', emoji: '🤓' },
-  { name: 'Jožin', role: 'Firemní kocour', emoji: '🐱' },
+  { name: 'Gustav', role: 'Děda • QA Tester', emoji: '👴', img: '/images/gustav.png' },
+  { name: 'Zdena', role: 'Babička • Zákaznický servis', emoji: '👵', img: '/images/marie.png' },
+  { name: 'Mirek', role: 'Táta • Technik', emoji: '👨', img: '/images/mirek.png' },
+  { name: 'Marie', role: 'Máma • Vedoucí provozu', emoji: '👩', img: '/images/marie.png' },
+  { name: 'Pepa', role: 'Syn • Copywriter', emoji: '🧑', img: '/images/pepa.png' },
+  { name: 'Bětka', role: 'Teta • Grafička', emoji: '👩‍🎨', img: '/images/betka.png' },
+  { name: 'Franta', role: 'Strejda • Obchodník', emoji: '🧔', img: '/images/franta.png' },
+  { name: 'Anička', role: 'Dcera • Zákaznický servis', emoji: '👧', img: '/images/anicka.png' },
+  { name: 'Emil', role: 'Bratranec • Analytik', emoji: '🤓', img: '/images/emil.png' },
+  { name: 'Jožin', role: 'Firemní kocour', emoji: '🐱', img: '/images/jozin.png' },
 ];
 
 const testimonials = [
@@ -181,7 +181,9 @@ export default function HomePage() {
                 href={`/rodina#${member.name.toLowerCase()}`}
                 className="bg-robik-card rounded-xl p-4 border border-pastel-blue/20 hover:border-pastel-blue/50 transition-all hover:shadow-md hover:-translate-y-1"
               >
-                <div className="text-3xl mb-2">{member.emoji}</div>
+                <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden bg-gradient-to-br from-pastel-blue to-pastel-pink">
+                  <img src={member.img} alt={member.name} className="w-full h-full object-cover" />
+                </div>
                 <div className="text-sm font-semibold text-robik-dark">{member.name}</div>
                 <div className="text-xs text-robik-text/50">{member.role}</div>
               </Link>

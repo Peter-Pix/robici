@@ -3,6 +3,7 @@ import Link from 'next/link';
 const family = [
   {
     id: 'gustav',
+    img: '/images/gustav.png',
     badge: '👴 Hlava rodu',
     name: 'Děda Gustav Robík',
     role: 'QA Tester • 76 let',
@@ -17,6 +18,7 @@ const family = [
   },
   {
     id: 'zdena',
+    img: '/images/marie.png',
     badge: '❤️ Srdce rodiny',
     name: 'Babička Zdena Robíková',
     role: 'Zákaznický servis • 72 let (ale říká, že 65)',
@@ -31,6 +33,7 @@ const family = [
   },
   {
     id: 'mirek',
+    img: '/images/mirek.png',
     badge: '🔧 Technická podpora',
     name: 'Táta Mirek Robík',
     role: 'Technik • 45 let',
@@ -45,6 +48,7 @@ const family = [
   },
   {
     id: 'marie',
+    img: '/images/marie.png',
     badge: '📋 Organizátorka',
     name: 'Máma Marie Robíková',
     role: 'Vedoucí provozu • 43 let',
@@ -59,6 +63,7 @@ const family = [
   },
   {
     id: 'pepa',
+    img: '/images/pepa.png',
     badge: '✍️ Kreativní duše',
     name: 'Pepa Robík',
     role: 'Copywriter • 24 let (ale chová se jako 17)',
@@ -73,6 +78,7 @@ const family = [
   },
   {
     id: 'betka',
+    img: '/images/betka.png',
     badge: '🎨 Umělkyně',
     name: 'Teta Bětka Robíková',
     role: 'Grafička • 38 let',
@@ -87,6 +93,7 @@ const family = [
   },
   {
     id: 'franta',
+    img: '/images/franta.png',
     badge: '📢 Optimista',
     name: 'Strejda Franta Robík',
     role: 'Obchodník • 47 let',
@@ -101,6 +108,7 @@ const family = [
   },
   {
     id: 'anicka',
+    img: '/images/anicka.png',
     badge: '🌼 Nejmladší duše',
     name: 'Anička Robíková',
     role: 'Zákaznický servis • 21 let (ale duši má 80)',
@@ -115,6 +123,7 @@ const family = [
   },
   {
     id: 'emil',
+    img: '/images/emil.png',
     badge: '📊 Počtář',
     name: 'Bratranec Emil Robík',
     role: 'Analytik • 30 let',
@@ -129,6 +138,7 @@ const family = [
   },
   {
     id: 'jozin',
+    img: '/images/jozin.png',
     badge: '🐱 Mazlíček',
     name: 'Jožin',
     role: 'Firemní kocour • věk neznámý (přišel sám)',
@@ -168,9 +178,9 @@ export default function RodinaPage() {
               style={{ animationDelay: `${i * 0.1}s` }}
             >
               <div className="flex flex-col md:flex-row gap-6">
-                {/* Avatar placeholder */}
-                <div className="flex-shrink-0 w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-gradient-to-br from-pastel-blue to-pastel-pink flex items-center justify-center text-4xl md:text-5xl">
-                  {member.badge.split(' ')[0]}
+                {/* Avatar */}
+                <div className="flex-shrink-0 w-24 h-24 md:w-32 md:h-32 rounded-2xl overflow-hidden bg-gradient-to-br from-pastel-blue to-pastel-pink">
+                  <img src={member.img} alt={member.name} className="w-full h-full object-cover" />
                 </div>
 
                 <div className="flex-1 min-w-0">
