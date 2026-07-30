@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
         'X-Title': 'Robíci - AI Omalovánky',
       },
       body: JSON.stringify({
-        model: 'qwen/qwen3.7-flash',
+        model: 'openai/gpt-4o-mini',
         messages: [
           {
             role: 'user',
