@@ -2,7 +2,12 @@
 // vztahy a osobnosti, a že robots.ts je single-source-of-truth pro celý web.
 import assert from 'node:assert';
 import { test } from 'node:test';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const projectRoot = path.resolve(__dirname, '..', '..', '..');
 import { robots, activeRobots, inactiveRobots } from './robots.ts';
 
 // Postavy, které web (page.tsx, rodina page) používá. robots.ts musí pokrývat
@@ -96,4 +101,45 @@ test('rodina page (rodina/page.tsx) má stejné postavy jako robots.ts', () => {
   const rodinaIds = [...rodina.matchAll(/id: '([^']+)'/g)].map((m) => m[1]);
   const robotIds = robots.map((r) => r.id);
   assert.deepEqual([...rodinaIds].sort(), [...robotIds].sort());
+});
+
+
+// --- Opakovatelný proces: přidání nového Robíka ---
+// Tyto testy garantují, že přidání nového Robíka je bezpečné a konzistentní.
+// Každý nový Robík musí mít kompletní data a obrázek, jinak test failuje.
+
+test('každý Robík má kompletní data (image, emoji, color, accent, role, description)', () => {
+  const required = ['id', 'name', 'role', 'emoji', 'image', 'color', 'accent', 'description', 'personality', 'catchphrases', 'status', 'mood', 'relationships'];
+  for (const r of robots) {
+    for (const field of required) {
+      assert.ok(
+        r[field] !== undefined && r[field] !== null && r[field] !== '',
+        `${r.id}: chybí povinné pole "${field}"`
+      );
+    }
+  }
+});
+
+test('každý Robík má validní status (active | inactive | error)', () => {
+  for (const r of robots) {
+    assert.ok(['active', 'inactive', 'error'].includes(r.status), `${r.id}: neplatný status "${r.status}"`);
+  }
+});
+
+test('každý Robík má obrázek v public/ (roboti/ nebo images/)', () => {
+  for (const r of robots) {
+    const imgPath = path.join(projectRoot, 'public', r.image.replace(/^\//, ''));
+    assert.ok(
+      existsSync(imgPath),
+      `${r.id}: obrázek ${r.image} neexistuje (${imgPath})`
+    );
+  }
+});
+
+test('každý Robík má emoji a barvy (color + accent)', () => {
+  for (const r of robots) {
+    assert.ok(r.emoji && r.emoji.length > 0, `${r.id}: chybí emoji`);
+    assert.ok(r.color && r.color.startsWith('bg-'), `${r.id}: color "${r.color}" není tailwind bg-*`);
+    assert.ok(r.accent && r.accent.length > 0, `${r.id}: chybí accent`);
+  }
 });
