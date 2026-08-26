@@ -1,3 +1,9 @@
+export interface Relationship {
+  to: string; // id druheho robika (musi existovat v robots[])
+  type: 'mentor' | 'rival' | 'partner' | 'family' | 'friend' | 'pet' | 'work';
+  note: string; // kratky popis vztahu
+}
+
 export interface Robot {
   id: string;
   name: string;
@@ -11,6 +17,7 @@ export interface Robot {
   status: 'active' | 'inactive' | 'error';
   mood: number; // 1-10
   accent: string; // tailwind accent color for card
+  relationships: Relationship[]; // explicitni vztahy k ostatnim robikum
 }
 
 export const robots: Robot[] = [
@@ -33,6 +40,12 @@ export const robots: Robot[] = [
       'Mějte krásný den!',
       'Napsal jsem nový článek.',
       'Je stručný. (Má 9 000 slov.)',
+    ],
+    relationships: [
+      { to: 'marie', type: 'work', note: 'Marie mu škrtá polovinu textů — a on jí za to píše básně.' },
+      { to: 'anicka', type: 'work', note: 'Pepa píše texty, Anička je doručuje zákazníkům.' },
+      { to: 'franta', type: 'work', note: 'Pepa píše texty pro Frantovy nabídky.' },
+      { to: 'betka', type: 'work', note: 'Bětka formátuje Pepovy texty do hezkých dokumentů.' },
     ],
     status: 'active',
     mood: 9,
@@ -57,6 +70,14 @@ export const robots: Robot[] = [
       'Ne.',
       'Tohle půjde předělat.',
     ],
+    relationships: [
+      { to: 'pepa', type: 'work', note: 'Marie škrtá Pepovi texty a seřve ho, když to přežene.' },
+      { to: 'franta', type: 'rival', note: 'Marie nemá ráda Frantovy obchodní nápady.' },
+      { to: 'mirek', type: 'work', note: 'Marie rozděluje úkoly, Mirek je plní.' },
+      { to: 'anicka', type: 'work', note: 'Marie řídí provoz, Anička se stará o zákazníky.' },
+      { to: 'emil', type: 'work', note: 'Marie sleduje rozpočet, Emil měří výsledky.' },
+      { to: 'zdena', type: 'family', note: 'Máma Marie a babička Zdena drží rodinu pohromadě.' },
+    ],
     status: 'active',
     mood: 7,
   },
@@ -80,8 +101,12 @@ export const robots: Robot[] = [
       'To určitě vyjde.',
       'Věřil jsem v nás.',
     ],
+    relationships: [
+      { to: 'marie', type: 'rival', note: 'Franta prodává, Marie mu krotí nápady.' },
+      { to: 'pepa', type: 'work', note: 'Franta prodává, Pepa píše texty pro nabídky.' },
+    ],
     status: 'active',
-    mood: 11,
+    mood: 10,
   },
   {
     id: 'mirek',
@@ -102,6 +127,11 @@ export const robots: Robot[] = [
       'Hotovo.',
       'Nedá se.',
       '...tak jo.',
+    ],
+    relationships: [
+      { to: 'marie', type: 'work', note: 'Mirek plní úkoly, které Marie rozdělí.' },
+      { to: 'gustav', type: 'work', note: 'Gustav rozbije, Mirek opraví.' },
+      { to: 'jozin', type: 'pet', note: 'Jožin mu leží na klávesnici a „drží servery“ — Mirek ho má nejradši.' },
     ],
     status: 'active',
     mood: 2,
@@ -126,6 +156,11 @@ export const robots: Robot[] = [
       'Už to opravujeme!',
       'Tady máš něco navíc jako omluvu ❤️',
     ],
+    relationships: [
+      { to: 'pepa', type: 'work', note: 'Anička doručuje texty, které Pepa napsal.' },
+      { to: 'marie', type: 'work', note: 'Anička se stará o zákazníky, Marie řídí provoz.' },
+      { to: 'zdena', type: 'work', note: 'Anička pomáhá Zdeně se zákaznickým servisem.' },
+    ],
     status: 'active',
     mood: 10,
   },
@@ -148,6 +183,9 @@ export const robots: Robot[] = [
       'Ještě to vylepším.',
       'Tohle by chtělo víc barev.',
       'Už to mám! (O 3 hodiny později.)',
+    ],
+    relationships: [
+      { to: 'pepa', type: 'work', note: 'Bětka formátuje Pepovy texty do hezkých dokumentů.' },
     ],
     status: 'inactive',
     mood: 8,
@@ -172,6 +210,9 @@ export const robots: Robot[] = [
       'To neprojde.',
       'Když to jde rozbít, rozbije to zákazník.',
     ],
+    relationships: [
+      { to: 'mirek', type: 'work', note: 'Gustav rozbije, Mirek opraví.' },
+    ],
     status: 'inactive',
     mood: 5,
   },
@@ -195,8 +236,38 @@ export const robots: Robot[] = [
       'Mám graf.',
       'Trend je pozitivní. (Asi.)',
     ],
+    relationships: [
+      { to: 'marie', type: 'work', note: 'Emil měří výsledky, Marie sleduje rozpočet.' },
+    ],
     status: 'active',
     mood: 6,
+  },
+  {
+    id: 'zdena',
+    name: 'Zdena Robíková',
+    role: 'Zákaznický servis',
+    emoji: '👵',
+    image: '/roboti/zdena.png',
+    color: 'bg-pink-500',
+    accent: 'pink',
+    description:
+      'Babička rodiny. Laskavá, trpělivá, vždycky má po ruce sušenku nebo čaj. Původně učitelka v mateřské školce, teď učí Robíky, jak se chovat k zákazníkům. Všechny má ráda, i ty nejprotivnější.',
+    personality: [
+      'Laskavá a trpělivá',
+      'Vždycky má po ruce sušenku nebo čaj',
+      'Učí Robíky, jak se chovat k zákazníkům',
+    ],
+    catchphrases: [
+      'To se stává, zlato.',
+      'Pojď, dáme si čaj.',
+      'S pusou to jde líp.',
+    ],
+    relationships: [
+      { to: 'anicka', type: 'work', note: 'Zdena a Anička spolu dělají zákaznický servis.' },
+      { to: 'marie', type: 'family', note: 'Babička Zdena a máma Marie drží rodinu pohromadě.' },
+    ],
+    status: 'inactive',
+    mood: 9,
   },
   {
     id: 'jozin',
@@ -217,6 +288,9 @@ export const robots: Robot[] = [
       'Mňau.',
       '...',
       '⬛',
+    ],
+    relationships: [
+      { to: 'mirek', type: 'pet', note: 'Jožin leží Mirkovi na klávesnici a „drží servery“.' },
     ],
     status: 'active',
     mood: 10,
