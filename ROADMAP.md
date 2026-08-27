@@ -13,7 +13,7 @@ Dokončit Robíky jako opakovaně použitelný produkt.
 ### Fáze 1 — Obsah (teď)
 - [ ] Ověřit, že Robíci mají konzistentní vztahy a osobnosti (devět)
 - [ ] Škola Robočtiny: obsah pro děti (zábava + učení)
-- [ ] Omalovánky / příběhy: rozšířit knihovnu
+- [x] Omalovánky / příběhy: rozšířit knihovnu (6 zdarma omalovánek + 4 premium balíčky, data extrahována do src/data/content/colorings.ts)
 
 ### Fáze 2 — Produkt (hotové + dolaď)
 - [ ] Přidat nového Robíka (jak na to — opakovatelný proces)

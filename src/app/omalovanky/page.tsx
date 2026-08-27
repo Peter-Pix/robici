@@ -1,70 +1,6 @@
 import Link from 'next/link';
 import GenerateColoring from '@/components/GenerateColoring';
-
-const freeColoring = [
-  {
-    img: '/images/omalovanka-rodina.png',
-    title: 'Rodina Robíků',
-    desc: 'Všichni Robíci na jedné stránce. Pepa píše, Bětka maluje, Gustav kontroluje. A Jožin spí.',
-    href: '/download/rodina',
-    story: 'Byl jednou jeden slon jménem Škyt. A Škyt měl jenom tři nohy. Gustav mu chtěl přidat čtvrtou. Ale Škyt řekl: "Já mám tři nohy rád." A tak ho nechali být. A Škyt žil šťastně až do smrti. To není pohádka, to je příběh o tom, že každý jsme jiný.',
-  },
-  {
-    img: '/images/omalovanka-pepa.png',
-    title: 'Pepa píše báseň',
-    desc: 'Pepa sedí u stolu, píše dlouhou báseň o kočkách. Jožin mu leží na papírech. Marie mu říká, ať to zkrátí.',
-    href: '/download/pepa',
-    story: 'Pepa napsal báseň o kočkách. Byla dlouhá 847 slov. Marie mu řekla: "Pepo, kočky jsou hezký, ale zákazník chce omalovánku." Pepa ji zkrátil na 800 slov. Marie vzdychla. Jožin spal dál.',
-  },
-  {
-    img: '/images/omalovanka-gustav.png',
-    title: 'Gustav kontroluje slona',
-    desc: 'Gustav si prohlíží omalovánku se slonem. Má na sobě brýle a nespokojený výraz. Počítá nohy.',
-    href: '/download/gustav',
-    story: '"Tohle teda NEEXISTUJE!" křičel Gustav. "Ten slon má jenom tři nohy!" Karel se bránil: "Ale on si dal tu čtvrtou za záda." Gustav mu nevěřil. Nakonec přidal čtvrtou nohu. A slon byl šťastnější než předtím.',
-  },
-];
-
-const premiumPacks = [
-  {
-    badge: 'Nejoblíbenější',
-    title: 'Rodinný balíček',
-    price: '299 Kč',
-    features: [
-      '10 omalovánek s příběhy',
-      'Každá omalovánka od jiného Robíka',
-      'Bonus: diplom "Přítel Robíků"',
-      'Pohlednice s celou rodinou',
-    ],
-    href: '/objednat/rodinny-balicek',
-  },
-  {
-    badge: '⭐ Nejlepší cena',
-    title: 'Roční předplatné',
-    price: '1 999 Kč / rok',
-    features: [
-      '12 balíčků (celkem 120 omalovánek)',
-      'Nové omalovánky každý měsíc',
-      'Přístup do všech lekcí Robočtiny',
-      'Diplom "Mistr Robočtiny" po dokončení',
-      'Osobní zpráva od Pepy',
-    ],
-    href: '/objednat/rocni-predplatne',
-    featured: true,
-  },
-  {
-    badge: 'Pro nejmenší',
-    title: 'Dětský balíček',
-    price: '199 Kč',
-    features: [
-      '5 jednoduchých omalovánek',
-      'Velké plochy pro vybarvování',
-      'Krátké příběhy pro nejmenší',
-      'Omalovánka s Jožinem zdarma',
-    ],
-    href: '/objednat/detsky-balicek',
-  },
-];
+import { freeColorings, premiumPacks } from '@/data/content/colorings';
 
 export default function OmalovankyPage() {
   return (
@@ -90,10 +26,10 @@ export default function OmalovankyPage() {
           </h2>
           <p className="text-sm text-robik-text/50 text-center mb-8">Stačí se zaregistrovat a můžeš si je stáhnout.</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {freeColoring.map((item) => (
+            {freeColorings.map((item) => (
               <div key={item.title} className="bg-robik-card rounded-2xl p-5 border border-pastel-blue/20">
                 <div className="w-full h-40 bg-gradient-to-br from-pastel-blue/30 to-pastel-pink/30 rounded-xl mb-4 flex items-center justify-center text-4xl">
-                  🎨
+                  {item.emoji}
                 </div>
                 <h3 className="text-base font-semibold text-robik-dark mb-1">{item.title}</h3>
                 <p className="text-xs text-robik-text/60 mb-3">{item.desc}</p>
