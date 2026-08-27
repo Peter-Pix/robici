@@ -109,11 +109,12 @@ test('rodina page (rodina/page.tsx) má stejné postavy jako robots.ts', () => {
 // Každý nový Robík musí mít kompletní data a obrázek, jinak test failuje.
 
 test('každý Robík má kompletní data (image, emoji, color, accent, role, description)', () => {
-  const required = ['id', 'name', 'role', 'emoji', 'image', 'color', 'accent', 'description', 'personality', 'catchphrases', 'status', 'mood', 'relationships'];
+  const required: (keyof typeof robots[number])[] = ['id', 'name', 'role', 'emoji', 'image', 'color', 'accent', 'description', 'personality', 'catchphrases', 'status', 'mood', 'relationships'];
   for (const r of robots) {
     for (const field of required) {
+      const val = r[field];
       assert.ok(
-        r[field] !== undefined && r[field] !== null && r[field] !== '',
+        val !== undefined && val !== null && val !== '',
         `${r.id}: chybí povinné pole "${field}"`
       );
     }
@@ -141,5 +142,94 @@ test('každý Robík má emoji a barvy (color + accent)', () => {
     assert.ok(r.emoji && r.emoji.length > 0, `${r.id}: chybí emoji`);
     assert.ok(r.color && r.color.startsWith('bg-'), `${r.id}: color "${r.color}" není tailwind bg-*`);
     assert.ok(r.accent && r.accent.length > 0, `${r.id}: chybí accent`);
+  }
+});
+
+// --- Konzistence rodinné struktury (děda Gustav, babička Zdena) ---
+// rodina page prezentuje rodinu: děda Gustav, babička Zdena, táta Mirek,
+// máma Marie a mladší generace. Tento test garantuje, že rodinné vazby
+// jsou zapsané i v robots.ts (nejen v UI), jinak by osobnosti a vztahy
+// nebyly konzistentní napříč webem.
+
+test('děda Gustav a babička Zdena mají rodinné pouto (family)', () => {
+  const gustav = robots.find((r) => r.id === 'gustav')!;
+  const zdena = robots.find((r) => r.id === 'zdena')!;
+  const gz = gustav.relationships.find((x) => x.to === 'zdena');
+  const zg = zdena.relationships.find((x) => x.to === 'gustav');
+  assert.ok(gz && gz.type === 'family', 'Gustav (děda) musí mít family vztah k Zdeně');
+  assert.ok(zg && zg.type === 'family', 'Zdena (babička) musí mít family vztah ke Gustavovi');
+});
+
+test('děda Gustav má family vztah k Mirkovi (táta) — syn a otec', () => {
+  const gustav = robots.find((r) => r.id === 'gustav')!;
+  const gz = gustav.relationships.find((x) => x.to === 'mirek' && x.type === 'family');
+  assert.ok(gz, 'Gustav (děda) musí mít family vztah k Mirkovi (táta)');
+});
+
+test('rodinné vztahy (family) jsou oboustranné a typu family', () => {
+  const byId = new Map(robots.map((r) => [r.id, r]));
+  for (const r of robots) {
+    for (const rel of r.relationships) {
+      if (rel.type === 'family') {
+        const other = byId.get(rel.to)!;
+        const back = other.relationships.find((x) => x.to === r.id && x.type === 'family');
+        assert.ok(back, `family vztah ${r.id} <-> ${rel.to} není oboustranný/stejný typ`);
+      }
+    }
+  }
+});
+
+test('žádný Robík nemá duplicitní pár vztahů (to + type)', () => {
+  for (const r of robots) {
+    const seen = new Set();
+    for (const rel of r.relationships) {
+      const key = `${rel.to}:${rel.type}`;
+      assert.ok(!seen.has(key), `${r.id} má duplicitní vztah ${key}`);
+      seen.add(key);
+    }
+  }
+});
+
+// --- Konzistence osobnosti a role ---
+test('každý Robík má osobnost konzistentní s rolí (basic keyword check)', () => {
+  const roleKeyword: Record<string, string[]> = {
+    pepa: ['píše', 'sluš', 'mail'],
+    marie: ['kontrol', 'tabulk', 'pedant', 'máma'],
+    franta: ['optimist', 'prodá', 'obchod'],
+    mirek: ['mlčí', 'oprav', 'technik'],
+    anicka: ['nejmilejší', 'omluv', 'zákazník'],
+    betka: ['hezčí', 'perfekcion', 'graf'],
+    gustav: ['rozbije', 'nedůvěř', 'test'],
+    emil: ['měří', 'graf', 'analytik'],
+    zdena: ['babička', 'laskav', 'čaj', 'trpěliv'],
+    jozin: ['kocour', 'server', 'práce'],
+  };
+  for (const r of robots) {
+    const keywords = roleKeyword[r.id];
+    assert.ok(keywords, `${r.id}: nemá definovaná klíčová slova v testu`);
+    const text = (r.role + ' ' + r.description + ' ' + r.personality.join(' ')).toLowerCase();
+    const hit = keywords.some((k) => text.includes(k));
+    assert.ok(hit, `${r.id}: osobnost/popis neodpovídá roli (hledal ${keywords.join(', ')})`);
+  }
+});
+
+// --- Konzistence obrázků na rodina page ---
+test('všechny obrázky na rodina page existují v public/images/', () => {
+  const rodina = readFileSync('src/app/rodina/page.tsx', 'utf8');
+  const imgs = [...rodina.matchAll(/img: '(\/images\/[^']+)'/g)].map((m) => m[1]);
+  assert.ok(imgs.length >= 10, 'rodina page má málo obrázků');
+  for (const img of imgs) {
+    const p = path.join(projectRoot, 'public', img.replace(/^\//, ''));
+    assert.ok(existsSync(p), `rodina page: obrázek ${img} neexistuje`);
+  }
+});
+
+test('každý Robík má unikátní obrázek (žádní dva nesdílejí stejný soubor)', () => {
+  const seen = new Map();
+  for (const r of robots) {
+    if (seen.has(r.image)) {
+      assert.fail(`${r.id} a ${seen.get(r.image)} sdílejí obrázek ${r.image}`);
+    }
+    seen.set(r.image, r.id);
   }
 });

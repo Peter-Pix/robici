@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "test": "node --test src/**/*.test.ts",
-    "test:validate": "node scripts/validate-robots.mjs"
+    "test:validate": "node scripts/validate-robots.mjs",
+    "test:deploy": "node --test scripts/verify-deploy.test.mjs",
+    "test:verify": "node scripts/verify-deploy.mjs"
   },
   "dependencies": {
     "@ai-sdk/openai": "^4.0.25",

@@ -6,7 +6,7 @@ AI rodina, která odstraňuje tu nejnudnější část psaní — a ještě u to
 
 ## Co to dělá
 
-- **Rodina** (`/rodina`) — devět Robíků s osobnostmi a vztahy (Franta, Gustav, …)
+- **Rodina** (`/rodina`) — deset Robíků s osobnostmi a vztahy (9 core + babička Zdena)
 - **Robočtina** (`/roboctina`) — vlastní jazyk Robíků
 - **Omalovánky** (`/omalovanky`) — kreativní obsah
 - **Balíčky** (`/balicky`) — nabídka balíčků
@@ -32,6 +32,36 @@ npm run dev
 ```
 
 Otevři `http://localhost:3115`.
+
+## 🚀 Deploy
+
+**Produkce:** https://robici-sro.vercel.app
+
+Vercel projekt: `robici-sro` (`prj_0bqFzvTiUDuSDj66WZXyCZKXtcbC`), org `team_fgrlCgfOTriSWC37Ay4sQwk1`. Auto-deploy z GitHubu `main` větve.
+
+**Verifikace deploye:**
+
+```bash
+npm run test:verify      # live HTTP check (8 routes + 3 API + 10 images + homepage content)
+npm run test:deploy      # unit testy verifikačního skriptu
+```
+
+Aktuální stav viz [`docs/vercel-deploy-verification.md`](docs/vercel-deploy-verification.md). Při změně avatarů / přidání Robíka vždycky spusť `test:verify` proti produkci.
+
+## 🚀 Deploy
+
+**Produkce:** https://robici-sro.vercel.app
+
+Vercel projekt: `robici-sro` (`prj_0bqFzvTiUDuSDj66WZXyCZKXtcbC`), org `team_fgrlCgfOTriSWC37Ay4sQwk1`. Auto-deploy z GitHubu `main` větve.
+
+**Verifikace deploye:**
+
+```bash
+npm run test:verify      # live HTTP check (8 routes + 3 API + 10 images + homepage content)
+npm run test:deploy      # unit testy verifikačního skriptu
+```
+
+Aktuální stav viz [`docs/vercel-deploy-verification.md`](docs/vercel-deploy-verification.md). Při změně avatarů / přidání Robíka vždycky spusť `test:verify` proti produkci.
 
 ## Struktura
 
