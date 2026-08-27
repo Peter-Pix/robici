@@ -22,7 +22,7 @@ Dokončit Robíky jako opakovaně použitelný produkt.
 
 ### Fáze 3 — Produkce (volitelné)
 - [ ] Vercel: ověřit deploy a doménu
-- [ ] SEO / sdílení
+- [x] SEO / sdílení — metadata pro všechny stránky, OG/Twitter tags, robots.txt, sitemap.xml, JSON-LD Organization schema, centrální src/lib/seo.ts
 
 ## Blokery
 - Positioning jasný — neprodej AI, prodej klid. Držet tón.

@@ -1,5 +1,9 @@
 import Link from 'next/link';
 
+import { pageMeta } from '@/lib/seo';
+
+export const metadata = pageMeta.home;
+
 const whyCards = [
   {
     icon: '😰',

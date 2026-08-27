@@ -1,20 +1,9 @@
-import type { Metadata } from 'next';
 import './globals.css';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
+import { pageMeta } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Robíci – rodina, která tě naučí kamarádit s AI',
-  description:
-    'Robíci jsou rodina AI kamarádů. Nauč se Robočtinu, stáhni si omalovánky a poznej celou naši rodinu. Nejsme nástroj. Jsme přátelé.',
-  openGraph: {
-    title: 'Robíci – rodina, která tě naučí kamarádit s AI',
-    description:
-      'Robíci jsou rodina AI kamarádů. Nauč se Robočtinu, stáhni si omalovánky a poznej celou naši rodinu.',
-    type: 'website',
-    locale: 'cs_CZ',
-  },
-};
+export const metadata = pageMeta.home;
 
 export default function RootLayout({
   children,
@@ -27,7 +16,23 @@ export default function RootLayout({
         <Nav />
         <main className="flex-1">{children}</main>
         <Footer />
-      </body>
+      
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Organization',
+            name: 'Robíci',
+            url: 'https://robici-sro.vercel.app',
+            logo: 'https://robici-sro.vercel.app/favicon.ico',
+            sameAs: [],
+            description:
+              'Robíci jsou rodina AI kamarádů, která odstraňuje tu nejnudnější část psaní. Neprodáváme AI. Prodáváme klid.',
+          }),
+        }}
+      />
+    </body>
     </html>
   );
 }

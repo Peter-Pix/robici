@@ -1,4 +1,24 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
+import { makeMetadata } from '@/lib/seo';
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const products: Record<string, string> = {
+    'rodinny-balicek': 'Rodinný balíček omalovánek',
+    'rocni-predplatne': 'Roční předplatné omalovánek',
+    'detsky-balicek': 'Dětský balíček omalovánek',
+    'zacatecnik': 'Balíček Začátečník',
+    'profesional': 'Balíček Profesionál',
+    'rodinny': 'Rodinný balíček služeb',
+  };
+  const title = products[params.slug] ?? 'Objednat';
+  return makeMetadata({
+    title: `${title} | Robíci`,
+    description: `Objednej si ${title.toLowerCase()} a začni používat Robíky jako svou digitální kancelář.`,
+    path: `/objednat/${params.slug}`,
+    noIndex: true,
+  });
+}
 
 export default function ObjednatPage({ params }: { params: { slug: string } }) {
   const products: Record<string, { title: string; price: string }> = {

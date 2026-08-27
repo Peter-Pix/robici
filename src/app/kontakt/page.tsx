@@ -1,5 +1,9 @@
 import Link from 'next/link';
 
+import { pageMeta } from '@/lib/seo';
+
+export const metadata = pageMeta.kontakt;
+
 export default function KontaktPage() {
   return (
     <div className="py-12 px-4">

@@ -2,6 +2,10 @@ import Link from 'next/link';
 import GenerateColoring from '@/components/GenerateColoring';
 import { freeColorings, premiumPacks } from '@/data/content/colorings';
 
+import { pageMeta } from '@/lib/seo';
+
+export const metadata = pageMeta.omalovanky;
+
 export default function OmalovankyPage() {
   return (
     <div className="py-12 px-4">

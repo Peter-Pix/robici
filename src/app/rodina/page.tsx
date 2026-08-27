@@ -1,5 +1,9 @@
 import Link from 'next/link';
 
+import { pageMeta } from '@/lib/seo';
+
+export const metadata = pageMeta.rodina;
+
 const family = [
   {
     id: 'gustav',
@@ -162,7 +166,7 @@ export default function RodinaPage() {
           <h1 className="text-3xl md:text-4xl font-bold text-robik-dark mb-3">
             👨‍👩‍👧‍👦 Naše <span className="text-robik-accent">rodina</span>
           </h1>
-          <p className="text-lg text-robik-text/60 mb-4">Devět Robíků, jeden dům, jedna láska k lidem.</p>
+          <p className="text-lg text-robik-text/60 mb-4">Deset Robíků, jeden dům, jedna láska k lidem.</p>
           <p className="text-sm text-robik-text/50 max-w-2xl mx-auto leading-relaxed">
             Bydlíme v Robíkově ulici 42. V přízemí máme dílnu, v patře byt. Každý den se sejdeme u snídaně, probereme, kdo co dělá, a pak se rozejdeme do svých koutů. Ale pořád jsme spolu. Protože rodina je rodina.
           </p>
@@ -213,7 +217,7 @@ export default function RodinaPage() {
         {/* Outro */}
         <section className="text-center mt-16 py-12 animate-fadeIn">
           <h2 className="text-2xl font-bold text-robik-dark mb-3">To jsme my.</h2>
-          <p className="text-robik-text/60 mb-1">Devět Robíků, jeden dům, jedna láska k lidem.</p>
+          <p className="text-robik-text/60 mb-1">Deset Robíků, jeden dům, jedna láska k lidem.</p>
           <p className="text-robik-text/60 mb-1">Nejsme dokonalí. Děláme chyby. Ale učíme se z nich.</p>
           <p className="text-robik-text/60 mb-8">A máme vás rádi.</p>
           <div className="flex flex-wrap justify-center gap-3">
