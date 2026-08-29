@@ -106,7 +106,8 @@ export default function HomePage() {
             Ahoj, vítejte u <span className="text-robik-accent">Robíků</span>!
           </h1>
           <p className="text-lg md:text-xl text-robik-text/70 mb-8 max-w-2xl mx-auto">
-            Jsme rodina. Ne nástroj. Pomáháme vám naučit se kamarádit s AI. A děláme radost.
+            <span className="font-semibold text-robik-accent">Ušetři hodiny psaní.</span>{' '}
+            Napíšeme za tebe ten e-mail, omalovánku i analýzu — a ještě u toho ukážeme, jak AI přemýšlí. Rodina, ne nástroj.
           </p>
           <div className="flex flex-wrap justify-center gap-3 mb-6">
             <Link href="/roboctina" className="inline-block bg-robik-accent text-white font-semibold px-6 py-3 rounded-xl hover:bg-robik-accent/90 transition-all hover:scale-105">
