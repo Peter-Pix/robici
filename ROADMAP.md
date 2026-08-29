@@ -2,36 +2,39 @@
 
 > AI rodina, která odstraňuje tu nejnudnější část psaní — a ukazuje, jak AI přemýšlí.
 > Audit: 2026-08-29 · The Archivist. Tato roadmapa = atomické tasky pro Buildera (~5 min každý).
+> Revize: 2026-08-29 · The Strategist — sloučeny duplicitní chat tasky (hotové v 3a8ba85), přidány nové z faktického stavu.
 
 ## Fáze A: Základ — stabilita a bezpečnost
 
 - [x] Ověřit konzistenci Robíků — 10 Robíků (9 core + Zdena), explicitní vztahy, rodinné vazby. Testy: 22 pass (`npm test`) + `npm run test:validate`.
 - [x] Opakovatelný proces přidání Robíka — `docs/adding-a-robot.md` + konzistenční testy (obrázky, vztahy, osobnosti).
 - [x] Ověřit deploy a doménu — Vercel Pro, `npm run test:verify` (8 routes + 3 API + 10 images + content). Zdena avatar commitnutý (fix 27. 8.).
-- [x] Ověřit, že `.env.local` je správně ignorovaný — `git check-ignore .env.local` → vrátil cestu; `git ls-files .env.local` → prázdné. Navíc: `.env.example` byl taky ignorovaný (`.env*` pravidlo) — přidán `!.env.example` do .gitignore, template commitnutý. (The Spine, 29. 8.)
-- [x] Ověřit, že žádný API klíč není v git historii — `git log --all -S "OLLAMA_API_KEY"` a `-S "VERCEL_OIDC_TOKEN"` → jen název proměnné v .env.example (placeholder), ne hodnota klíče. Skutečná hodnota (sk-or-v1-…) NENÍ v historii (0 výskytů). (The Builder, 29. 8.)
-- [x] Optimalizovat avatary Robíků — 10 PNG (1024×1024, 0.9–1.3 MB) → WebP (q80, 22–40 KB), ~97% úspora (~10 MB → ~270 KB). Aktualizovány reference (rodina/page.tsx, page.tsx, seo.ts) + verify-deploy skripty. 22/22 testů, 16/16 deploy testů, build OK. (The Builder, 29. 8.)
+- [x] Ověřit, že `.env.local` je správně ignorovaný — `git check-ignore .env.local` → vrátil cestu; `git ls-files .env.local` → prázdné. `.env.example` byl taky ignorovaný (`.env*` pravidlo) — přidán `!.env.example`, template commitnutý. (The Spine, 29. 8.)
+- [x] Ověřit, že žádný API klíč není v git historii — `git log --all -S "OLLAMA_API_KEY"` → jen název proměnné v placeholder, ne hodnota. Skutečná hodnota (`sk-or-v1-…`) NENÍ v historii. (The Builder, 29. 8.)
+- [x] Optimalizovat avatary Robíků — 10 PNG (1024², 0.9–1.3 MB) → WebP q80 (22–40 KB), ~97% úspora. Reference aktualizovány (rodina/page, page.tsx, seo.ts) + verify-deploy. 22/22 + 16/16 testů, build OK. (The Builder, 29. 8.)
 
-## Fáze B: Funkce — dokončit interakci a obsah
+## Fáze B: Funkce — dokončit interakci, obsah a stabilitu
 
-- [x] Interakce Robík ↔ LLM: přidat chat s Robíkem na `/rodina` — API `/api/rodina/chat` (POST {robotId, message}), system prompt z robots.ts (osobnost + hlášky), RobotChatPanel komponenta. Využívá ollamaCall + checkIpLimit (10 msg/den) + logToolUsage. Jožin vynechán. 22/22 testů, build OK. (The Builder, 29. 8.)
-- [ ] Interakce Robík ↔ LLM: přidat per-Robík system prompt (osobnost + hlášky z `robots.ts`) do chat route. (5 min)
-- [ ] Interakce Robík ↔ LLM: přidat rate limit na chat (využít existující `checkIpLimit` v `ollama.ts`). (5 min)
-- [ ] Škola Robočtiny: rozšířit obsah pro děti — přidat lekci 6 (zábava + učení), data do `src/data/content/`. (5 min)
-- [ ] Responsivní design (Apple styl): ověřit mobilní layout na `/rodina`, `/roboctina`, `/omalovanky` — opravit přetékání/rozbité komponenty. (5 min)
+- [x] Interakce Robík ↔ LLM: chat s Robíkem na `/rodina` — API `/api/rodina/chat` (POST {robotId, message}), system prompt z `robots.ts` (role + osobnost + hlášky), `RobotChatPanel` komponenta. **Per-Robík prompt + rate limit (checkIpLimit, 10 msg/den) jsou součástí téhož commitu** (3a8ba85) — Jožin vynechán. 22/22 testů, build OK. (The Builder, 29. 8.)
+- [ ] Opravit `.env.example` — kód čte `OPENROUTER_API_KEY` (`generate-image:7`), ale `.env.example` ho neobsahuje (jen `OLLAMA_API_KEY`); `VERCEL_OIDC_TOKEN` kód nečte. Přidat `OPENROUTER_API_KEY` do template, odebrat/označit `VERCEL_OIDC_TOKEN`. Cíl: template = co kód reálně čte. (5 min)
+- [ ] Škola Robočtiny: přidat lekci 6 — rozšířit `src/data/content/` + novou stránku `src/app/roboctina/lekce-6/page.tsx` (zábava + učení, konzistentní s lekcemi 1–5). Ověřit odkaz v `/roboctina`. (5 min)
+- [ ] Responsivní design: ověřit mobilní layout na `/rodina`, `/roboctina`, `/omalovanky` — zkontrolovat přetékání (horizontal scroll) a rozbité komponenty při šířce 375 px; opravit nalezené breakpointy (Tailwind v4 `sm:`/`md:`). Cíl: bez horizontálního scrollu na mobilu. (5 min)
+- [ ] Ověřit chat na `/rodina` na produkci — `npm run test:verify` + ruční test, že odeslání zprávy Robíkovi vrátí odpověď v osobnosti (ne chyba 500 z chybějícího `OLLAMA_API_KEY`). (5 min)
 
 ## Fáze C: Marketing — vnímání projektu
 
-- [ ] Vlastní OG image — nahradit `DEFAULT_OG_IMAGE = '/images/pepa.png'` v `src/lib/seo.ts` za dedikovaný OG obrázek (např. `/images/og-robici.png`), přidat soubor do `public/images/`. (5 min)
-- [ ] Ověřit OG image na produkci — `npm run test:verify` + ruční check, že sdílení na sociálních sítích ukazuje správný obrázek. (5 min)
-- [ ] Landing page: ověřit, že homepage (`/`) má silný hook a CTA — zkontrolovat Hero komponentu, přidat konkrétní hodnotu („ušetři hodiny psaní“). (5 min)
+- [ ] Vlastní OG image — nahradit `DEFAULT_OG_IMAGE = '/images/pepa.webp'` v `src/lib/seo.ts` za dedikovaný OG obrázek (`/images/og-robici.webp`), vytvořit/vložit soubor do `public/images/`. Cíl: sdílení na soc. sítích ukazuje brand, ne Pepu. (5 min)
+- [ ] Ověřit OG + sitemap na produkci — zkontrolovat, že `sitemap.xml` obsahuje všechny hlavní cesty (`/rodina`, `/roboctina`, `/omalovanky`, `/balicky`, `/sluzby`, `/kontakt`) a OG image je na produkci dosažitelný (HTTP 200). (5 min)
+- [ ] Landing CTA: posílit homepage hook — ověřit `Hero.tsx` + hlavní CTA tlačítka na `/` (aktuálně vedou na `/roboctina`, `/omalovanky`, `/rodina`). Přidat konkrétní hodnotu ("ušetři hodiny psaní") do hero textu, pokud chybí. Cíl: návštěvník do 5 s ví, co Robíci dělají a kam kliknout. (5 min)
 
 ## Fáze D: Dokumentace a úklid
 
 - [x] Opravit README — odstranit duplikovanou „🚀 Deploy“ sekci, opravit cestu `src/data/robots.ts` → `src/data/robots/robots.ts`. (The Archivist, 29. 8.)
-- [ ] Aktualizovat zastaralé benchmark/strategie docs — `docs/benchmark-report-2026-07-29/30/31.md` a `herbert-strategy-*` neodráží aktuální stav; buď aktualizovat, nebo přesunout do `docs/archive/`. (5 min)
-- [ ] Commit a push — commitnout ROADMAP.md + případné fixy z Fáze A–C, pushnout branch `main`. (5 min)
+- [ ] Archivovat zastaralé docs — přesunout `docs/benchmark-report-2026-07-29/30/31.md`, `docs/herbert-strategy-2026-07-29/30/31.md`, `docs/roadmap.md` (duplicitní s ROADMAP.md) do `docs/archive/`. Cíl: `docs/` obsahuje jen aktuální dokumenty. (5 min)
+- [ ] Odstranit kořenové balast soubory — `Gemini_Generated_Image_*.png`, `PineTools.com_*.zip` (7 MB+ artefakty) + složku `image_robici/` (10 PNG, nevyužité — `robots.ts` čte `/roboti/*.png`). `git rm` a commit. Cíl: čistý kořen repa, -7 MB. (5 min)
+- [ ] Commit a push — commitnout ROADMAP.md + fixy z Fáze B–D, pushnout branch `main`. Cíl: `git status` clean. (5 min)
 
 ## Blokery
 - Positioning jasný — neprodej AI, prodej klid. Držet tón.
-- Interakce Robík ↔ LLM vyžaduje funkční `OLLAMA_API_KEY` (je v `.env.local`, validní).
+- Chat na `/rodina` vyžaduje funkční `OLLAMA_API_KEY` (v `.env.local`, validní).
+- `.env.example` fix (Fáze B) je předpoklad pro bezpečné onboardování nového vývojáře.
