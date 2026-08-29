@@ -7,7 +7,7 @@ AI rodina, která odstraňuje tu nejnudnější část psaní — a ještě u to
 ## Co to dělá
 
 - **Rodina** (`/rodina`) — deset Robíků s osobnostmi a vztahy (9 core + babička Zdena) + **chat s Robíkem** (interakce Robík ↔ LLM, odpovídá v osobnosti)
-- **Robočtina** (`/roboctina`) — vlastní jazyk Robíků, 5 lekcí + AI chat
+- **Robočtina** (`/roboctina`) — vlastní jazyk Robíků, 6 lekcí + AI chat
 - **Omalovánky** (`/omalovanky`) — 6 zdarma + 4 premium, AI generování omalovánek
 - **Balíčky** (`/balicky`) — nabídka balíčků
 - **Objednat / Registrace** — onboarding zákazníků

@@ -159,6 +159,45 @@ Pokud uživatel poděkoval, odpověz mile a na konci přidej: [STEP_COMPLETED]
 Pokud ne, řekni mu, že by bylo hezké poděkovat.`,
     },
   ],
+  'lekce-6': [
+    {
+      id: 'hello-story',
+      robotId: 'emil',
+      instruction: 'Pozdrav Emila a řekni mu jedno svoje oblíbené zvíře. Třeba: "Ahoj Emile, jsem [jméno] a mám rád kočky." Dnes spolu vymyslíme příběh.',
+      validatorPrompt: `Jsi Emil, bratranec z rodiny Robíků. Analytik, miluješ grafy, data a učíš se nové věci.
+Hodnotíš, zda uživatel:
+1. Pozdravil tě
+2. Řekl své oblíbené zvíře
+
+Pokud uživatel splnil oba body, nadchni se pro společný příběh a na konci přidej: [STEP_COMPLETED]
+Pokud ne, přátelsky ho naved', co má doplnit.`,
+    },
+    {
+      id: 'idea',
+      robotId: 'emil',
+      instruction: 'Zeptej se Emila na nápad na příběh. Použij 3 části dobré žádosti: co chceš (příběh), jaký má být (vtipný, o zvířeti, krátký), a proč (chceš si ho zahrát). Třeba: "Emile, vymysli nám krátký vtipný příběh o mé oblíbené zvířeti, ať se pobavíme."',
+      validatorPrompt: `Jsi Emil. Uživatel se tě ptá na nápad na příběh a procvičuje si dobrou žádost.
+Hodnotíš, zda žádost obsahuje:
+1. Co chce (příběh)
+2. Jaký má být (vtipný, o zvířeti, krátký)
+3. Proč (aby se pobavili)
+
+Pokud žádost má všechny 3 části, nabídni zábavný nápad na příběh a na konci přidej: [STEP_COMPLETED]
+Pokud ne, povzbuď ho, ať přidá chybějící detail.`,
+    },
+    {
+      id: 'feedback',
+      robotId: 'emil',
+      instruction: 'Emil ti nabídl nápad. Dej mu zpětnou vazbu — řekni mu, co se ti líbí, a co bys změnil. Třeba: "Líbí se mi začátek, ale hlavní hrdina by mohl být statečnější."',
+      validatorPrompt: `Jsi Emil. Uživatel ti dává zpětnou vazbu na tvůj nápad na příběh.
+Hodnotíš, zda uživatel:
+1. Řekl, co se mu líbí
+2. Řekl, co by změnil
+
+Pokud uživatel dal obojí, pochval ho a řekni, že teď máte skvělý příběh. Na konci přidej: [STEP_COMPLETED]
+Pokud ne, naved' ho, že zpětná vazba má mít obě části.`,
+    },
+  ],
 };
 
 // --- Robot System Prompts ---

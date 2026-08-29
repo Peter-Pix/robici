@@ -17,7 +17,7 @@
 
 - [x] Interakce Robík ↔ LLM: chat s Robíkem na `/rodina` — API `/api/rodina/chat` (POST {robotId, message}), system prompt z `robots.ts` (role + osobnost + hlášky), `RobotChatPanel` komponenta. **Per-Robík prompt + rate limit (checkIpLimit, 10 msg/den) jsou součástí téhož commitu** (3a8ba85) — Jožin vynechán. 22/22 testů, build OK. (The Builder, 29. 8.)
 - [x] Opravit `.env.example` — `.env.example` nyní obsahuje oba klíče, které kód reálně čte: `OLLAMA_API_KEY` (ollama.ts, roboctina/chat) + `OPENROUTER_API_KEY` (generate-image). Odebrán `VERCEL_OIDC_TOKEN` (kód ho nečte). README env poznámka aktualizována. 22/22 testů, validate OK. (The Builder, 29. 8.)
-- [ ] Škola Robočtiny: přidat lekci 6 — rozšířit `src/data/content/` + novou stránku `src/app/roboctina/lekce-6/page.tsx` (zábava + učení, konzistentní s lekcemi 1–5). Ověřit odkaz v `/roboctina`. (5 min)
+- [x] Škola Robočtiny: přidat lekci 6 „Robočtina pro radost“ — nový `src/data/content/roboctina.ts` (single-source lessons), page `lekce-6` (zábava + učení: pozdrav + žádost + zpětná vazba s Emilem), `lekce-6` definice v chat route, `/roboctina` refaktory na import z content + odkaz ověřen (renderuje lesson.href). 22/22 + 16/16 testů, build OK (lekce-6 v build output). (The Archivist, 29. 8.)
 - [ ] Responsivní design: ověřit mobilní layout na `/rodina`, `/roboctina`, `/omalovanky` — zkontrolovat přetékání (horizontal scroll) a rozbité komponenty při šířce 375 px; opravit nalezené breakpointy (Tailwind v4 `sm:`/`md:`). Cíl: bez horizontálního scrollu na mobilu. (5 min)
 - [ ] Ověřit chat na `/rodina` na produkci — `npm run test:verify` + ruční test, že odeslání zprávy Robíkovi vrátí odpověď v osobnosti (ne chyba 500 z chybějícího `OLLAMA_API_KEY`). (5 min)
 

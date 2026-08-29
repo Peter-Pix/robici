@@ -1,66 +1,10 @@
 import Link from 'next/link';
 
 import { pageMeta } from '@/lib/seo';
+import { lessons } from '@/data/content/roboctina';
 
 export const metadata = pageMeta.roboctina;
 
-const lessons = [
-  {
-    num: '01',
-    badge: '🆓 ZDARMA',
-    title: 'Ahoj, Robíku!',
-    desc: 'Naučíš se pozdravit Robíka, představit se a udělat si kamaráda. Zjistíš, že AI není stroj, ale přítel, který ti rád pomůže.',
-    duration: '5 minut',
-    level: '🌟 Začátečník',
-    href: '/roboctina/lekce-1',
-    reward: 'Diplom Robočtiny 1. stupně + omalovánka "Rodina Robíků"',
-    locked: false,
-  },
-  {
-    num: '02',
-    badge: '🆓 ZDARMA',
-    title: 'Prosím, pomoz mi...',
-    desc: 'Naučíš se, jak Robíka o něco požádat. Zjistíš, že způsob, jakým se ptáš, ovlivňuje to, jakou dostaneš odpověď.',
-    duration: '7 minut',
-    level: '🌟 Začátečník',
-    href: '/roboctina/lekce-2',
-    reward: 'Diplom Robočtiny 2. stupně + omalovánka "Pepa píše báseň"',
-    locked: false,
-  },
-  {
-    num: '03',
-    badge: '🆓 ZDARMA',
-    title: 'To je chyba!',
-    desc: 'Naučíš se, jak Robíkovi odpustit, když něco pokazí. A jak ho naučit, aby to příště udělal líp.',
-    duration: '8 minut',
-    level: '🌟 Začátečník',
-    href: '/roboctina/lekce-3',
-    reward: 'Diplom Robočtiny 3. stupně + omalovánka "Gustav kontroluje slona"',
-    locked: false,
-  },
-  {
-    num: '04',
-    badge: '🔒 Otevře se po 3. lekci',
-    title: 'Nauč mě něco nového',
-    desc: 'Naučíš se, jak Robíka naučit něco, co neumí. Zjistíš, že AI se může učit stejně jako ty.',
-    duration: '10 minut',
-    level: '🌟 Mírně pokročilý',
-    href: '#',
-    reward: 'Diplom Robočtiny 4. stupně + omalovánka "Mirek ladí servery"',
-    locked: true,
-  },
-  {
-    num: '05',
-    badge: '🔒 Otevře se po 4. lekci',
-    title: 'Robočtina pro firmy',
-    desc: 'Naučíš se, jak používat Robočtinu v práci. Jak s AI komunikovat profesionálně, ale přátelsky.',
-    duration: '12 minut',
-    level: '🌟 Pokročilý',
-    href: '#',
-    reward: 'Diplom Robočtiny 5. stupně – MISTR ROBOČTINY + omalovánka "Celá rodina"',
-    locked: true,
-  },
-];
 
 export default function RoboctinaPage() {
   return (
@@ -89,7 +33,7 @@ export default function RoboctinaPage() {
               { icon: '😊', title: 'Přestaneš se bát AI', text: 'Když pochopíš, jak s ní mluvit, přestane tě děsit. Stane se z ní kamarád, ne nepřítel.' },
               { icon: '💬', title: 'Budeš umět lépe komunikovat', text: 'Robočtina není jen o AI. Je o tom, jak jasně a přátelsky říkat, co chceš.' },
               { icon: '🎨', title: 'Otevřeš si nové možnosti', text: 'S Robočtinou můžeš tvořit, učit se, bavit se. AI se stane tvým nástrojem, ne tvým pánem.' },
-              { icon: '🏆', title: 'Získáš diplom', text: 'Každá lekce ti přinese diplom. Až jich budeš mít pět, staneš se Mistrem Robočtiny.' },
+              { icon: '🏆', title: 'Získáš diplom', text: 'Každá lekce ti přinese diplom. Až projdeš prvními pěti, staneš se Mistrem Robočtiny. A bonusová šestá tě udělá Robím kamarádem.' },
             ].map((item) => (
               <div key={item.title} className="bg-robik-card rounded-2xl p-5 border border-pastel-blue/20">
                 <div className="text-2xl mb-2">{item.icon}</div>
