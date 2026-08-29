@@ -25,8 +25,8 @@ function loadLocalImageIds() {
   const imagesDir = path.join(ROOT, "public", "images");
   try {
     return readdirSync(imagesDir)
-      .filter((f) => f.endsWith(".png"))
-      .map((f) => f.replace(/\.png$/, ""));
+      .filter((f) => f.endsWith(".webp"))
+      .map((f) => f.replace(/\.webp$/, ""));
   } catch {
     return [];
   }
@@ -60,13 +60,13 @@ describe("verify-deploy: robot id discovery", () => {
 });
 
 describe("verify-deploy: local image discovery", () => {
-  it("discovers all .png files in public/images/", () => {
+  it("discovers all .webp files in public/images/", () => {
     const ids = loadLocalImageIds();
     // We have at least 10 robot images (pepa through jozin + zdena).
     assert.ok(ids.length >= 10, `expected ≥10 images, got ${ids.length}: ${ids.join(",")}`);
   });
 
-  it("returns lowercase id (no .png extension)", () => {
+  it("returns lowercase id (no .webp extension)", () => {
     const ids = loadLocalImageIds();
     for (const id of ids) {
       assert.ok(!id.includes("."), `${id} should not have an extension`);
@@ -74,9 +74,9 @@ describe("verify-deploy: local image discovery", () => {
     }
   });
 
-  it("includes zdena.png (the previously-missing image)", () => {
+  it("includes zdena.webp (the previously-missing image)", () => {
     const ids = new Set(loadLocalImageIds());
-    assert.ok(ids.has("zdena"), "zdena.png should exist in public/images/");
+    assert.ok(ids.has("zdena"), "zdena.webp should exist in public/images/");
   });
 });
 
@@ -104,7 +104,7 @@ describe("verify-deploy: script contents", () => {
     assert.match(src, /POST.*\/api\/debug\/reset-limits/s);
   });
 
-  it("checks images at /images/*.png paths", () => {
+  it("checks images at /images/*.webp paths", () => {
     assert.match(src, /\/images\//);
   });
 

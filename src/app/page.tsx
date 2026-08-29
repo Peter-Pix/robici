@@ -63,16 +63,16 @@ const offerCards = [
 ];
 
 const familyMembers = [
-  { name: 'Gustav', role: 'Děda • QA Tester', emoji: '👴', img: '/images/gustav.png' },
-  { name: 'Zdena', role: 'Babička • Zákaznický servis', emoji: '👵', img: '/images/marie.png' },
-  { name: 'Mirek', role: 'Táta • Technik', emoji: '👨', img: '/images/mirek.png' },
-  { name: 'Marie', role: 'Máma • Vedoucí provozu', emoji: '👩', img: '/images/marie.png' },
-  { name: 'Pepa', role: 'Syn • Copywriter', emoji: '🧑', img: '/images/pepa.png' },
-  { name: 'Bětka', role: 'Teta • Grafička', emoji: '👩‍🎨', img: '/images/betka.png' },
-  { name: 'Franta', role: 'Strejda • Obchodník', emoji: '🧔', img: '/images/franta.png' },
-  { name: 'Anička', role: 'Dcera • Zákaznický servis', emoji: '👧', img: '/images/anicka.png' },
-  { name: 'Emil', role: 'Bratranec • Analytik', emoji: '🤓', img: '/images/emil.png' },
-  { name: 'Jožin', role: 'Firemní kocour', emoji: '🐱', img: '/images/jozin.png' },
+  { name: 'Gustav', role: 'Děda • QA Tester', emoji: '👴', img: '/images/gustav.webp' },
+  { name: 'Zdena', role: 'Babička • Zákaznický servis', emoji: '👵', img: '/images/marie.webp' },
+  { name: 'Mirek', role: 'Táta • Technik', emoji: '👨', img: '/images/mirek.webp' },
+  { name: 'Marie', role: 'Máma • Vedoucí provozu', emoji: '👩', img: '/images/marie.webp' },
+  { name: 'Pepa', role: 'Syn • Copywriter', emoji: '🧑', img: '/images/pepa.webp' },
+  { name: 'Bětka', role: 'Teta • Grafička', emoji: '👩‍🎨', img: '/images/betka.webp' },
+  { name: 'Franta', role: 'Strejda • Obchodník', emoji: '🧔', img: '/images/franta.webp' },
+  { name: 'Anička', role: 'Dcera • Zákaznický servis', emoji: '👧', img: '/images/anicka.webp' },
+  { name: 'Emil', role: 'Bratranec • Analytik', emoji: '🤓', img: '/images/emil.webp' },
+  { name: 'Jožin', role: 'Firemní kocour', emoji: '🐱', img: '/images/jozin.webp' },
 ];
 
 const testimonials = [

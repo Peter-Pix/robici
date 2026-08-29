@@ -11,7 +11,7 @@ import type { Metadata } from 'next';
 const SITE_NAME = 'Robíci';
 const BASE_URL = 'https://robici-sro.vercel.app';
 const DEFAULT_LOCALE = 'cs_CZ';
-const DEFAULT_OG_IMAGE = '/images/pepa.png'; // fallback, nahradit vlastním OG obrázkem
+const DEFAULT_OG_IMAGE = '/images/pepa.webp'; // fallback, nahradit vlastním OG obrázkem
 
 export interface PageMetaInput {
   title: string;
@@ -75,56 +75,56 @@ export const pageMeta = {
     description:
       'Pepa, Marie, Franta, Mirek, Anička, Bětka, Gustav, Emil, Jožin a babička Zdena. Každý má svou povahu, svůj příběh a svůj smysl pro humor.',
     path: '/rodina',
-    image: '/images/gustav.png',
+    image: '/images/gustav.webp',
   }),
   roboctina: makeMetadata({
     title: 'Robočtina – nauč se mluvit s AI jako s kamarádem',
     description:
       'Interaktivní lekce Robočtiny pro děti i dospělé. Naučíš se, jak AI požádat o pomoc, jak jí odpustit chybu a jak z ní dostat to nejlepší.',
     path: '/roboctina',
-    image: '/images/marie.png',
+    image: '/images/marie.webp',
   }),
   omalovanky: makeMetadata({
     title: 'Omalovánky od Robíků – s příběhem ke každému obrázku',
     description:
       'Stáhni si omalovánky zdarma nebo kup balíček. Každá omalovánka má svůj příběh — od Pepy, Marie, Gustava, Bětky nebo Jožina.',
     path: '/omalovanky',
-    image: '/images/betka.png',
+    image: '/images/betka.webp',
   }),
   balicky: makeMetadata({
     title: 'Balíčky Robíků – omalovánky, e-maily a pomocníci',
     description:
       'Vyber si balíček podle svých potřeb. Začátečník, Profesionál nebo třeba dárek pro kamaráda, co se bojí AI.',
     path: '/balicky',
-    image: '/images/franta.png',
+    image: '/images/franta.webp',
   }),
   sluzby: makeMetadata({
     title: 'Služby Robíků – píšeme, kreslíme, kontrolujeme a radíme',
     description:
       'Pepa napíše, Bětka nakreslí, Gustav zkontroluje, Franta vymyslí. Vyber si Robíka podle toho, co zrovna potřebuješ.',
     path: '/sluzby',
-    image: '/images/gustav.png',
+    image: '/images/gustav.webp',
   }),
   kontakt: makeMetadata({
     title: 'Kontakt – napiš Robíkům',
     description:
       'Máš dotaz, nápad, nebo chceš jen popřát? Robíci odpovídají všem. I těm, co nám nadávaj. I těm, co nám posílaj básničky.',
     path: '/kontakt',
-    image: '/images/anicka.png',
+    image: '/images/anicka.webp',
   }),
   zpravodaj: makeMetadata({
     title: 'Zpravodaj Robíků – co se děje v rodině',
     description:
       'Novinky, příhody a poznámky z rodiny Robíků. Franta to zase provedl, Gustav našel chybu ve slonovi a Jožin spí.',
     path: '/zpravodaj',
-    image: '/images/emil.png',
+    image: '/images/emil.webp',
   }),
   registrace: makeMetadata({
     title: 'Registrace – vstup do rodiny Robíků',
     description:
       'Zaregistruj se a získej přístup ke všem omalovánkám a lekcím zdarma. Babička Zdena už vaří čaj.',
     path: '/registrace',
-    image: '/images/zdena.png',
+    image: '/images/zdena.webp',
   }),
   objednat: makeMetadata({
     title: 'Objednat – pořiď si Robíky na pomoc',

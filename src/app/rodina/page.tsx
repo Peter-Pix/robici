@@ -7,7 +7,7 @@ export const metadata = pageMeta.rodina;
 const family = [
   {
     id: 'gustav',
-    img: '/images/gustav.png',
+    img: '/images/gustav.webp',
     badge: '👴 Hlava rodu',
     name: 'Děda Gustav Robík',
     role: 'QA Tester • 76 let',
@@ -22,7 +22,7 @@ const family = [
   },
   {
     id: 'zdena',
-    img: '/images/marie.png',
+    img: '/images/marie.webp',
     badge: '❤️ Srdce rodiny',
     name: 'Babička Zdena Robíková',
     role: 'Zákaznický servis • 72 let (ale říká, že 65)',
@@ -37,7 +37,7 @@ const family = [
   },
   {
     id: 'mirek',
-    img: '/images/mirek.png',
+    img: '/images/mirek.webp',
     badge: '🔧 Technická podpora',
     name: 'Táta Mirek Robík',
     role: 'Technik • 45 let',
@@ -52,7 +52,7 @@ const family = [
   },
   {
     id: 'marie',
-    img: '/images/marie.png',
+    img: '/images/marie.webp',
     badge: '📋 Organizátorka',
     name: 'Máma Marie Robíková',
     role: 'Vedoucí provozu • 43 let',
@@ -67,7 +67,7 @@ const family = [
   },
   {
     id: 'pepa',
-    img: '/images/pepa.png',
+    img: '/images/pepa.webp',
     badge: '✍️ Kreativní duše',
     name: 'Pepa Robík',
     role: 'Copywriter • 24 let (ale chová se jako 17)',
@@ -82,7 +82,7 @@ const family = [
   },
   {
     id: 'betka',
-    img: '/images/betka.png',
+    img: '/images/betka.webp',
     badge: '🎨 Umělkyně',
     name: 'Teta Bětka Robíková',
     role: 'Grafička • 38 let',
@@ -97,7 +97,7 @@ const family = [
   },
   {
     id: 'franta',
-    img: '/images/franta.png',
+    img: '/images/franta.webp',
     badge: '📢 Optimista',
     name: 'Strejda Franta Robík',
     role: 'Obchodník • 47 let',
@@ -112,7 +112,7 @@ const family = [
   },
   {
     id: 'anicka',
-    img: '/images/anicka.png',
+    img: '/images/anicka.webp',
     badge: '🌼 Nejmladší duše',
     name: 'Anička Robíková',
     role: 'Zákaznický servis • 21 let (ale duši má 80)',
@@ -127,7 +127,7 @@ const family = [
   },
   {
     id: 'emil',
-    img: '/images/emil.png',
+    img: '/images/emil.webp',
     badge: '📊 Počtář',
     name: 'Bratranec Emil Robík',
     role: 'Analytik • 30 let',
@@ -142,7 +142,7 @@ const family = [
   },
   {
     id: 'jozin',
-    img: '/images/jozin.png',
+    img: '/images/jozin.webp',
     badge: '🐱 Mazlíček',
     name: 'Jožin',
     role: 'Firemní kocour • věk neznámý (přišel sám)',

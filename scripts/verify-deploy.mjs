@@ -54,8 +54,8 @@ function loadLocalImageIds() {
   const imagesDir = path.join(PUBLIC_DIR, "images");
   try {
     return readdirSync(imagesDir)
-      .filter((f) => f.endsWith(".png"))
-      .map((f) => f.replace(/\.png$/, ""));
+      .filter((f) => f.endsWith(".webp"))
+      .map((f) => f.replace(/\.webp$/, ""));
   } catch {
     return [];
   }
@@ -151,25 +151,25 @@ for (const r of API_ROUTES) {
   }
 }
 
-// 3. Images — public/images/*.png na deployi
-console.log(BOLD("\n3. Obrázky Robíků (/images/*.png)"));
+// 3. Images — public/images/*.webp na deployi
+console.log(BOLD("\n3. Obrázky Robíků (/images/*.webp)"));
 const localImages = loadLocalImageIds();
 const robotIds = loadRobotIds();
 const imagesToCheck = [...new Set([...localImages, ...robotIds])].sort();
 for (const id of imagesToCheck) {
   try {
-    const url = `${BASE_URL}/images/${id}.png`;
+    const url = `${BASE_URL}/images/${id}.webp`;
     const res = await fetchHead(url, TIMEOUT_MS);
     const isLocal = localImages.includes(id);
     // Lokální obrázek musí být dosažitelný. Obrázek v robots.ts bez lokálního souboru
     // je varování (graceful), ne failure.
     if (isLocal) {
-      record(`/images/${id}.png`, res.status === 200, `${res.status} | ${res.contentLength}B`);
+      record(`/images/${id}.webp`, res.status === 200, `${res.status} | ${res.contentLength}B`);
     } else {
-      record(`/images/${id}.png`, true, `${DIM("robot-only, no local file")}`);
+      record(`/images/${id}.webp`, true, `${DIM("robot-only, no local file")}`);
     }
   } catch (e) {
-    record(`/images/${id}.png`, false, `error: ${e.message}`);
+    record(`/images/${id}.webp`, false, `error: ${e.message}`);
   }
 }
 
