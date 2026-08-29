@@ -21,7 +21,7 @@ Primárně Češi 28–35 let pracující v malé firmě (< 50 lidí) nebo freel
 
 - Next.js (App Router)
 - React + Tailwind CSS
-- Data: `src/data/robots.ts` (robotí postavy), `src/data/content/shift-data.ts`
+- Data: `src/data/robots/robots.ts` (robotí postavy), `src/data/content/shift-data.ts`
 - Vercel (`.vercel/`)
 
 ## Spuštění
@@ -48,20 +48,6 @@ npm run test:deploy      # unit testy verifikačního skriptu
 
 Aktuální stav viz [`docs/vercel-deploy-verification.md`](docs/vercel-deploy-verification.md). Při změně avatarů / přidání Robíka vždycky spusť `test:verify` proti produkci.
 
-## 🚀 Deploy
-
-**Produkce:** https://robici-sro.vercel.app
-
-Vercel projekt: `robici-sro` (`prj_0bqFzvTiUDuSDj66WZXyCZKXtcbC`), org `team_fgrlCgfOTriSWC37Ay4sQwk1`. Auto-deploy z GitHubu `main` větve.
-
-**Verifikace deploye:**
-
-```bash
-npm run test:verify      # live HTTP check (8 routes + 3 API + 10 images + homepage content)
-npm run test:deploy      # unit testy verifikačního skriptu
-```
-
-Aktuální stav viz [`docs/vercel-deploy-verification.md`](docs/vercel-deploy-verification.md). Při změně avatarů / přidání Robíka vždycky spusť `test:verify` proti produkci.
 
 ## Struktura
 
