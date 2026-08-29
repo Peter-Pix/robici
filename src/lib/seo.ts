@@ -11,7 +11,7 @@ import type { Metadata } from 'next';
 const SITE_NAME = 'Robíci';
 const BASE_URL = 'https://robici-sro.vercel.app';
 const DEFAULT_LOCALE = 'cs_CZ';
-const DEFAULT_OG_IMAGE = '/images/pepa.webp'; // fallback, nahradit vlastním OG obrázkem
+const DEFAULT_OG_IMAGE = '/images/og-robici.webp'; // brand OG image pro sdílení (rodina Robíků, ne jeden avatar)
 
 export interface PageMetaInput {
   title: string;

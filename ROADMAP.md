@@ -23,7 +23,7 @@
 
 ## Fáze C: Marketing — vnímání projektu
 
-- [ ] Vlastní OG image — nahradit `DEFAULT_OG_IMAGE = '/images/pepa.webp'` v `src/lib/seo.ts` za dedikovaný OG obrázek (`/images/og-robici.webp`), vytvořit/vložit soubor do `public/images/`. Cíl: sdílení na soc. sítích ukazuje brand, ne Pepu. (5 min)
+- [x] Vlastní OG image — nahradit `DEFAULT_OG_IMAGE = '/images/pepa.webp'` v `src/lib/seo.ts` za dedikovaný OG obrázek (`/images/og-robici.webp`), vytvořit/vložit soubor do `public/images/`. Cíl: sdílení na soc. sítích ukazuje brand, ne Pepu. (5 min)
 - [ ] Ověřit OG + sitemap na produkci — zkontrolovat, že `sitemap.xml` obsahuje všechny hlavní cesty (`/rodina`, `/roboctina`, `/omalovanky`, `/balicky`, `/sluzby`, `/kontakt`) a OG image je na produkci dosažitelný (HTTP 200). (5 min)
 - [ ] Landing CTA: posílit homepage hook — ověřit `Hero.tsx` + hlavní CTA tlačítka na `/` (aktuálně vedou na `/roboctina`, `/omalovanky`, `/rodina`). Přidat konkrétní hodnotu ("ušetři hodiny psaní") do hero textu, pokud chybí. Cíl: návštěvník do 5 s ví, co Robíci dělají a kam kliknout. (5 min)
 
