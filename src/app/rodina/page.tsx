@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import { pageMeta } from '@/lib/seo';
+import RobotChatPanel from '@/components/RobotChatPanel';
 
 export const metadata = pageMeta.rodina;
 
@@ -157,6 +158,10 @@ const family = [
   },
 ];
 
+const chatRobots = family
+  .filter((m) => m.id !== 'jozin') // Jožin je kocour, nemluví
+  .map((m) => ({ id: m.id, name: m.name, emoji: m.badge.split(' ')[0], role: m.role }));
+
 export default function RodinaPage() {
   return (
     <div className="py-12 px-4">
@@ -213,6 +218,9 @@ export default function RodinaPage() {
             </section>
           ))}
         </div>
+
+        {/* Chat s Robíkem */}
+        <RobotChatPanel robots={chatRobots} />
 
         {/* Outro */}
         <section className="text-center mt-16 py-12 animate-fadeIn">

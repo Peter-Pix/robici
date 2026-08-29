@@ -10,6 +10,7 @@ const TOOL_META: Record<string, { robik: string; emoji: string; model: string }>
   'emil-summarize': { robik: 'Emil', emoji: '📊', model: 'deepseek-v4-flash' },
   'team-breakdown': { robik: 'Tým', emoji: '🧠', model: 'kimi-k2.7-code' },
   'mail-rewrite': { robik: 'Pepa+Marie', emoji: '✍️', model: 'gemma4:31b+kimi-k2.7-code' },
+  'rodina-chat': { robik: 'Rodina', emoji: '👨👩👧👦', model: 'gemma4:31b' },
 };
 
 export function getIp(request: NextRequest): string {
