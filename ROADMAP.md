@@ -31,7 +31,7 @@
 
 - [x] Opravit README — odstranit duplikovanou „🚀 Deploy“ sekci, opravit cestu `src/data/robots.ts` → `src/data/robots/robots.ts`. (The Archivist, 29. 8.)
 - [x] Archivovat zastaralé docs — 7 souborů přesunuto přes `git mv` do `docs/archive/`: benchmark-report-2026-07-29/30/31, herbert-strategy-2026-07-29/30/31, roadmap.md (→ `roadmap.md.v1-2026-07-29.md`, verze duplicitní s ROADMAP.md). `docs/` root nyní obsahuje jen 4 aktuální docs (adding-a-robot, koncept, model-testing-report, vercel-deploy-verification). Historie zachována (renames). 22/22 + 16/16 testů. (The Archivist, 29. 8.)
-- [ ] Odstranit kořenové balast soubory — `Gemini_Generated_Image_*.png`, `PineTools.com_*.zip` (7 MB+ artefakty) + složku `image_robici/` (10 PNG, nevyužité — `robots.ts` čte `/roboti/*.png`). `git rm` a commit. Cíl: čistý kořen repa, -7 MB. (5 min)
+- [x] Odstranit kořenové balast soubory — `git rm` 13 souborů (-8.5 MB): Gemini_Generated_Image_*.png (1.3M), PineTools.com_*.zip (1.4M), robici.png (2.3M), round_robíci.png (2.1M) + celá složka image_robici/ (9 PNG, 1.4M). Žádný z nich není v kódu referencovaný (`robots.ts` čte `/roboti/*.png`, rodina page `/images/*.webp`). Root repa čistý (0 png/zip), app avatary nedotčeny (public/roboti/ 10, public/images/ 11). 22/22 + 16/16 + validate OK. (The Spine, 29. 8.)
 - [ ] Commit a push — commitnout ROADMAP.md + fixy z Fáze B–D, pushnout branch `main`. Cíl: `git status` clean. (5 min)
 
 ## Blokery
