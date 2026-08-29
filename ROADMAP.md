@@ -25,7 +25,7 @@
 
 - [x] Vlastní OG image — nahradit `DEFAULT_OG_IMAGE = '/images/pepa.webp'` v `src/lib/seo.ts` za dedikovaný OG obrázek (`/images/og-robici.webp`), vytvořit/vložit soubor do `public/images/`. Cíl: sdílení na soc. sítích ukazuje brand, ne Pepu. (5 min)
 - [x] Ověřit OG + sitemap na produkci — sitemap.xml HTTP 200, obsahuje všech 6 hlavních cest (`/rodina`, `/roboctina`, `/omalovanky`, `/balicky`, `/sluzby`, `/kontakt`). OG image `/images/og-robici.webp` HTTP 200 (image/webp, 30926 B); homepage `og:image` + `twitter:image` ukazují na brand image (1200×630). `npm run test:verify` 24/24 (11 images). (The Builder, 29. 8.). (5 min)
-- [ ] Landing CTA: posílit homepage hook — ověřit `Hero.tsx` + hlavní CTA tlačítka na `/` (aktuálně vedou na `/roboctina`, `/omalovanky`, `/rodina`). Přidat konkrétní hodnotu ("ušetři hodiny psaní") do hero textu, pokud chybí. Cíl: návštěvník do 5 s ví, co Robíci dělají a kam kliknout. (5 min)
+- [x] Landing CTA: posílit homepage hook — Hero.tsx je sirotčí (nikde importovaný, nepoužívá se). Skutečný hero = inline v src/app/page.tsx: subtitle doplněn o konkrétní hodnotu 'Ušetři hodiny psaní' + co Robíci dělají (e-mail, omalovánka, analýza). 3 CTA (roboctina/omalovanky/rodina) ověřeny v renderu. 22/22 + 16/16, build OK. (The Builder, 29. 8.)
 
 ## Fáze D: Dokumentace a úklid
 
