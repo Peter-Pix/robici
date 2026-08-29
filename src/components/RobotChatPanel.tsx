@@ -137,12 +137,12 @@ export default function RobotChatPanel({ robots }: RobotChatPanelProps) {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSend()}
           placeholder={`Napiš ${selected?.name}ovi…`}
-          className="flex-1 bg-robik-bg border border-pastel-blue/30 rounded-xl px-4 py-2.5 text-sm text-robik-text focus:outline-none focus:border-robik-accent"
+          className="flex-1 min-w-0 bg-robik-bg border border-pastel-blue/30 rounded-xl px-4 py-2.5 text-sm text-robik-text focus:outline-none focus:border-robik-accent"
         />
         <button
           onClick={handleSend}
           disabled={isLoading || !input.trim()}
-          className="bg-robik-accent text-white font-semibold px-5 py-2.5 rounded-xl hover:bg-robik-accent/90 transition-all disabled:opacity-50"
+          className="flex-shrink-0 bg-robik-accent text-white font-semibold px-5 py-2.5 rounded-xl hover:bg-robik-accent/90 transition-all disabled:opacity-50"
         >
           Odeslat
         </button>
