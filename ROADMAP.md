@@ -8,7 +8,7 @@
 - [x] Ověřit konzistenci Robíků — 10 Robíků (9 core + Zdena), explicitní vztahy, rodinné vazby. Testy: 22 pass (`npm test`) + `npm run test:validate`.
 - [x] Opakovatelný proces přidání Robíka — `docs/adding-a-robot.md` + konzistenční testy (obrázky, vztahy, osobnosti).
 - [x] Ověřit deploy a doménu — Vercel Pro, `npm run test:verify` (8 routes + 3 API + 10 images + content). Zdena avatar commitnutý (fix 27. 8.).
-- [ ] Ověřit, že `.env.local` je správně ignorovaný — `git check-ignore .env.local` → musí vrátit cestu; `git ls-files .env.local` → prázdné. (5 min)
+- [x] Ověřit, že `.env.local` je správně ignorovaný — `git check-ignore .env.local` → vrátil cestu; `git ls-files .env.local` → prázdné. Navíc: `.env.example` byl taky ignorovaný (`.env*` pravidlo) — přidán `!.env.example` do .gitignore, template commitnutý. (The Spine, 29. 8.)
 - [ ] Ověřit, že žádný API klíč není v git historii — `git log --all -S "OLLAMA_API_KEY"` a `-S "VERCEL_OIDC_TOKEN"` → prázdné. (5 min)
 - [ ] Optimalizovat avatary Robíků — převést 10 PNG (~0.9–1.3 MB každý) na WebP/AVIF, ověřit, že testy obrázků (`public/images/`) stále procházejí. (5 min)
 
