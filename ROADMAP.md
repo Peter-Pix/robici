@@ -30,7 +30,7 @@
 ## Fáze D: Dokumentace a úklid
 
 - [x] Opravit README — odstranit duplikovanou „🚀 Deploy“ sekci, opravit cestu `src/data/robots.ts` → `src/data/robots/robots.ts`. (The Archivist, 29. 8.)
-- [ ] Archivovat zastaralé docs — přesunout `docs/benchmark-report-2026-07-29/30/31.md`, `docs/herbert-strategy-2026-07-29/30/31.md`, `docs/roadmap.md` (duplicitní s ROADMAP.md) do `docs/archive/`. Cíl: `docs/` obsahuje jen aktuální dokumenty. (5 min)
+- [x] Archivovat zastaralé docs — 7 souborů přesunuto přes `git mv` do `docs/archive/`: benchmark-report-2026-07-29/30/31, herbert-strategy-2026-07-29/30/31, roadmap.md (→ `roadmap.md.v1-2026-07-29.md`, verze duplicitní s ROADMAP.md). `docs/` root nyní obsahuje jen 4 aktuální docs (adding-a-robot, koncept, model-testing-report, vercel-deploy-verification). Historie zachována (renames). 22/22 + 16/16 testů. (The Archivist, 29. 8.)
 - [ ] Odstranit kořenové balast soubory — `Gemini_Generated_Image_*.png`, `PineTools.com_*.zip` (7 MB+ artefakty) + složku `image_robici/` (10 PNG, nevyužité — `robots.ts` čte `/roboti/*.png`). `git rm` a commit. Cíl: čistý kořen repa, -7 MB. (5 min)
 - [ ] Commit a push — commitnout ROADMAP.md + fixy z Fáze B–D, pushnout branch `main`. Cíl: `git status` clean. (5 min)
 
