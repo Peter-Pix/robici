@@ -52,7 +52,7 @@ Kód reálně čte:
 | `OLLAMA_API_KEY` | `src/lib/ollama.ts`, `src/app/api/roboctina/chat/route.ts` (Ollama Cloud chat) |
 | `OPENROUTER_API_KEY` | `src/app/api/generate-image/route.ts` (OpenRouter image gen) |
 
-> ⚠️ `.env.example` aktuálně dokumentuje jen `OLLAMA_API_KEY` + `VERCEL_OIDC_TOKEN`; `OPENROUTER_API_KEY` (čtený kódem) tam chybí — viz audit v `planner/state.md`.
+> `.env.example` obsahuje oba klíče (`OLLAMA_API_KEY` + `OPENROUTER_API_KEY`) — template odpovídá tomu, co kód reálně čte.
 
 ## Spuštění
 
