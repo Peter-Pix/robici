@@ -14,7 +14,7 @@
 
 ## Fáze B: Funkce — dokončit interakci a obsah
 
-- [ ] Interakce Robík ↔ LLM: přidat chat s Robíkem na `/rodina` — využít existující `src/lib/ollama.ts` (ollamaCall) a tool API, Robík odpovídá v osobnosti. (5 min)
+- [x] Interakce Robík ↔ LLM: přidat chat s Robíkem na `/rodina` — API `/api/rodina/chat` (POST {robotId, message}), system prompt z robots.ts (osobnost + hlášky), RobotChatPanel komponenta. Využívá ollamaCall + checkIpLimit (10 msg/den) + logToolUsage. Jožin vynechán. 22/22 testů, build OK. (The Builder, 29. 8.)
 - [ ] Interakce Robík ↔ LLM: přidat per-Robík system prompt (osobnost + hlášky z `robots.ts`) do chat route. (5 min)
 - [ ] Interakce Robík ↔ LLM: přidat rate limit na chat (využít existující `checkIpLimit` v `ollama.ts`). (5 min)
 - [ ] Škola Robočtiny: rozšířit obsah pro děti — přidat lekci 6 (zábava + učení), data do `src/data/content/`. (5 min)
